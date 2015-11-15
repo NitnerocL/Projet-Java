@@ -17,7 +17,9 @@ public class Objets {
     public static final int GOURDE = 3;
 
     /**
-     * Permet d'afficher le nom d'un objet à partir de sa représentation numérique
+     * Permet d'afficher le nom d'un objet à partir de sa représentation
+     * numérique
+     *
      * @param n l'identifiant de l'objet
      * @param pluriel true si on veut récupérer le nom de l'objet au pluriel
      * @return le nom de l'objet sous forme de chaine

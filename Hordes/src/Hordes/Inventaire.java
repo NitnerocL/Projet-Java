@@ -31,6 +31,7 @@ public class Inventaire {
     ////////////////////////////////////////////////////////////////////////////
     /**
      * Ajoute un objet à l'inventaire (s'il n'est pas déjà plein)
+     *
      * @param objet l'ID de l'objet à ajouter
      * @return true si l'ajout a été effectué, false si le sac était plein
      */
@@ -43,20 +44,22 @@ public class Inventaire {
             return false;
         }
     }
-    
+
     @Override
-    public String toString(){
-         String chaine = new String();
-         for (int objet : this.objets){
-             chaine += Objets.objetToString(objet, false);
-         }
-         return chaine;
+    public String toString() {
+        String chaine = new String();
+        for (int objet : this.objets) {
+            chaine += Objets.objetToString(objet, false);
+        }
+        return chaine;
     }
-    
+
     /**
      * Retire un objet du sac
+     *
      * @param objet l'ID de l'objet à retirer
-     * @return true si tout s'est bien passé, false si l'objet n'était pas dans l'inventaire
+     * @return true si tout s'est bien passé, false si l'objet n'était pas dans
+     * l'inventaire
      */
     public boolean retirer(int objet) {
         if (this.contient(objet)) {
@@ -67,16 +70,19 @@ public class Inventaire {
             return false;
         }
     }
+
     /**
-    * Détermine si l'inventaire est plein ou non
-    * @return true si l'inventaire est plein, faux sinon
-    */
+     * Détermine si l'inventaire est plein ou non
+     *
+     * @return true si l'inventaire est plein, faux sinon
+     */
     public boolean isFull() {
         return this.objets.size() == 10;
     }
-    
+
     /**
      * Détermine si un objet est contenu ou pas dans l'inventaire
+     *
      * @param objet l'ID de l'objet
      * @return true si l'objet est dans l'inventaire, false sinon
      */
