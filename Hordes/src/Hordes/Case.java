@@ -31,6 +31,9 @@ public class Case {
     ////////////////////////////////////////////////////////////////////////////
     // Méthodes publiques
     ////////////////////////////////////////////////////////////////////////////
+    /**
+     * Fait apparaître un nombre de zombies aléatoire sur la case
+     */
     public void popZombies(){
         if(this.nombreZombies == 0){
             Random ra = new Random();
@@ -40,4 +43,4 @@ public class Case {
             } 
         }
     }
-}
+}//End of class
