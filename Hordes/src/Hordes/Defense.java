@@ -19,11 +19,13 @@ public class Defense {
     private int coutPA;
     private int avancement;
     private int pointsDefense;
+    private String nom ;
 
     ////////////////////////////////////////////////////////////////////////////
     // Constructeurs
     ////////////////////////////////////////////////////////////////////////////
-    public Defense(int coutPlanches, int coutMetal, int coutPA, int def) {
+    public Defense( String nom, int coutPlanches, int coutMetal, int coutPA, int def) {
+        this.nom = nom ;
         this.coutPlanches = coutPlanches;
         this.coutMetal = coutMetal;
         this.coutPA = coutPA;
