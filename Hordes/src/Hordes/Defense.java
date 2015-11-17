@@ -19,13 +19,13 @@ public class Defense {
     private int coutPA;
     private int avancement;
     private int pointsDefense;
-    private String nom ;
+    private String nom;
 
     ////////////////////////////////////////////////////////////////////////////
     // Constructeurs
     ////////////////////////////////////////////////////////////////////////////
-    public Defense( String nom, int coutPlanches, int coutMetal, int coutPA, int def) {
-        this.nom = nom ;
+    public Defense(String nom, int coutPlanches, int coutMetal, int coutPA, int def) {
+        this.nom = nom;
         this.coutPlanches = coutPlanches;
         this.coutMetal = coutMetal;
         this.coutPA = coutPA;
@@ -59,19 +59,31 @@ public class Defense {
     ////////////////////////////////////////////////////////////////////////////
     // Méthodes publiques
     ////////////////////////////////////////////////////////////////////////////
+    /**
+     * Indique si la défense est construite ou non
+     *
+     * @return true si la défense est construite, false sinon
+     */
     public boolean isBuilt() {
         return this.coutPA == this.avancement;
     }
 
-    public void construire(int nombrePA) {
+    /**
+     * Ajoute des points d'acancement à la défense à construire
+     *
+     * @param nombrePA nombre de PA investis
+     * @return true si tout s'est bien passé, false si le montant est trop élevé
+     */
+    public boolean construire(int nombrePA) {
         if (this.coutPA <= this.avancement + nombrePA) {
             this.avancement += nombrePA;
+            return true;
         } else if (this.isBuilt()) {
             System.out.println("Le bâtiment est déjà construit");
         } else {
             System.out.println("Le montant dépasse");
         }
-
+        return false;
     }
 
 }//End of class
