@@ -69,6 +69,15 @@ public class Defense {
     }
 
     /**
+     * Indique si la défense a commencé à être construite ou pas
+     *
+     * @return true si la construction est commencée, false sinon
+     */
+    public boolean constructionCommencee() {
+        return this.avancement > 0;
+    }
+
+    /**
      * Ajoute des points d'acancement à la défense à construire
      *
      * @param nombrePA nombre de PA investis
