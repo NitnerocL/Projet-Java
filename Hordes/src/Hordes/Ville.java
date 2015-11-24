@@ -79,34 +79,49 @@ public class Ville {
      *
      * @return this.pointsDefense
      */
-    public int calculPointsDeDéfense() {
+    public int calculPointsDeDefense() {
         this.pointsDefense = 20;
         for (int i = 0; i < 7; i++) {
-            this.pointsDefense += defenses[i].pointsDefense;
+            if (this.defenses[i].isBuilt()) {
+                this.pointsDefense += defenses[i].getPointsDefense();
+            }
         }
         return pointsDefense;
     }
 
-    public boolean construireDefense(int numCaseDef, int nbPA) { //Dans Jeu, demander au joueur quel bâtiment il veut construire.
-        if (!this.defenses[numCaseDef].constructionCommencee()) {
-            if (this.banque.getNombrePlanches() < this.defenses[numCaseDef].coutPlanches) {
+    /**
+     * Construit une jolie défense dans la ville.
+     *
+     * @param numCaseDef
+     * @param nbPA
+     * @return
+     */
+    public boolean construireDefense(int numCaseDef, int nbPA) { //Dans Jeu, demander au joueur quel bâtiment il veut construire et enlever les PA dans le joueur.
+        if (!this.defenses[numCaseDef].constructionCommencee()) { //Vérifie si c'est une nouvelle construction. Si oui, on vérifie qu'il y a assez de matériel.
+            if (this.banque.getNombrePlanches() < this.defenses[numCaseDef].getCoutPlanches()) {
                 System.out.println("Il n'y a pas assez de planches !");
                 return false;
             }
-            if (this.banque.getNombreMetal() < this.defenses[numCaseDef].coutMetal) {
+            if (this.banque.getNombreMetal() < this.defenses[numCaseDef].getCoutMetal()) {
                 System.out.println("Il n'y a pas assez de métal !");
                 return false;
 
+            } else { //On a assez de planches et assez de métal, donc on les enlève de la banque !
+                this.banque.retirerObjet(Objets.PLANCHES, this.defenses[numCaseDef].getCoutPlanches());
+                this.banque.retirerObjet(Objets.METAL, this.defenses[numCaseDef].getCoutMetal());
             }
-            else {
-                this.banque.retirerObjet(Objets.PLANCHES,this.defenses[numCaseDef].coutPlanches );
-                // pareil avec le métal
-                
-        }
-        
-            
 
         }
+        /*On appelle la méthode "Defense.construire(nbPA)" pour ajouter le nombre de points d'avancement à la défense.
+         Si c'est la première fois qu'on construit la défense, cette méthode renvoie forcément true puisqu'un joueur ne peut pas finir un bâtiment en une fois.*/
+        if (this.defenses[numCaseDef].construire(nbPA)) { //Si les PA ont bien été ajoutés à la défense en question.
+            if (this.defenses[numCaseDef].isBuilt()) { //Si la défense est terminée, on met à jour les points de défense de la ville.
+                this.calculPointsDeDefense();
+            }
+            return true; //All was right.
+
+        }
+        return false; //Something was wrong.
+
     }
-
 }
