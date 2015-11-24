@@ -32,6 +32,22 @@ public class Case {
     }
 
     ////////////////////////////////////////////////////////////////////////////
+    // Accesseurs
+    ////////////////////////////////////////////////////////////////////////////
+
+    public int getNombreMetal() {
+        return this.nombreMetal;
+    }
+
+    public int getNombrePlanches() {
+        return this.nombrePlanches;
+    }
+
+    public boolean getFouillee() {
+        return this.fouillee;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
     // Méthodes publiques
     ////////////////////////////////////////////////////////////////////////////
     /**
@@ -45,18 +61,6 @@ public class Case {
                 this.nombreZombies = alea + 1;
             }
         }
-    }
-
-    public int getNombreMetal() {
-        return this.nombreMetal;
-    }
-
-    public int getNombrePlanches() {
-        return this.nombrePlanches;
-    }
-
-    public boolean getFouillee() {
-        return this.fouillee;
     }
 
     public void ajouterPlanche() {
