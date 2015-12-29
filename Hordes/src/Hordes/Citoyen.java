@@ -61,7 +61,23 @@ public class Citoyen {
     public boolean getDejaBu() {
         return this.dejaBu;
     }
-
+    ////////////////////////////////////////////////////////////////////////////
+    // Méthodes privées
+    ////////////////////////////////////////////////////////////////////////////
+    private boolean boire(){
+        if(!this.dejaBu){
+            this.pa += 6;
+            if(this.pa > 10){
+                this.pa = 10;
+            }
+            this.dejaBu = true;
+            return true;
+        }else{
+            System.out.println("Vous avez déjà bu aujourd'hui !");
+            return false;
+        }
+    }
+    
     ////////////////////////////////////////////////////////////////////////////
     // Méthodes publiques
     ////////////////////////////////////////////////////////////////////////////
@@ -85,16 +101,16 @@ public class Citoyen {
     public boolean seDeplacer(int direction) {
         if (this.pa > 0) {
             int deplacement[][] = {{0, -1}, {-1, 0}, {0, 1}, {1, 0}};
-            
+
             //On vérifie que le déplacement ne sort pas du tableau
-            if ((this.position[0] + deplacement[direction][0] >= 0) &&
-                    (this.position[0] + deplacement[direction][0] < 25) && 
-                    (this.position[1] + deplacement[direction][1] >= 0) && 
-                    (this.position[1] + deplacement[direction][1] < 25)) {
+            if ((this.position[0] + deplacement[direction][0] >= 0)
+                    && (this.position[0] + deplacement[direction][0] < 25)
+                    && (this.position[1] + deplacement[direction][1] >= 0)
+                    && (this.position[1] + deplacement[direction][1] < 25)) {
                 this.position[0] += deplacement[direction][0];
                 this.position[1] += deplacement[direction][1];
                 return true;
-            }else{
+            } else {
                 System.out.println("Vous ne pouvez pas aller dans cette direction ! (vous sortez du plateau)");
                 return false;
             }
@@ -104,6 +120,91 @@ public class Citoyen {
             return false;
         }
     }
+
+    public boolean combattre() {
+        if (this.pa > 0) {
+            this.pa -= 1;
+            if (Math.random() < 0.1) {
+                System.out.println("Vous avez été blessé et perdez 10 PV");
+                this.pv -= 10;
+            }
+            return true;
+        } else {
+            System.out.println("Vous n'avez pas assez de PA");
+            return false;
+        }
+    }
     
+    
+    public boolean puiserEau() {
+        if (this.estdDansVille()) {
+            return this.sacADos.ajouter(Objets.GOURDE);
+
+        } else {
+            System.out.println("Vous devez être dans la ville pour prendre de l'eau");
+            return false;
+        }
+    }
+    
+    public boolean boireVille(){
+        if (this.estdDansVille()){
+            return this.boire();
+        }else{
+            System.out.println("Vous n'êtes pas dans la ville.");
+            return false;
+        }
+    }
+    
+    public boolean utiliserObjet(int objet) {
+        if (objet >= 0 && objet <2) {
+            System.out.println("Vous ne pouvez pas utiliser cet objet");
+            return false;
+        } else if (objet == Objets.NOURRITURE ) {
+            if (!this.dejaMange) {
+                if (this.sacADos.retirer(objet)) {
+                    this.pa += 6;
+                    if (this.pa > 10) {
+                        this.pa = 10;
+                    }
+                    this.dejaMange = true;
+                    return true;
+                }
+            }else{
+                System.out.println("Vous avez déjà mangé aujourd'hui !");
+                return false;
+            }
+        }else if (objet == Objets.GOURDE){
+            if (!this.dejaBu) {
+                if (this.sacADos.retirer(objet)){
+                    return this.boire();
+                }
+            }else{
+                System.out.println("Vous avez déjà bu aujourd'hui !");
+                return false;
+            }
+        }else{
+            System.out.println("Erreur ! Cet objet n'existe pas");
+            return false;
+        }
+        return false;
+    }
+    
+    public boolean ramasser(int objet){
+        return this.sacADos.ajouter(objet);
+    }
+    
+    public boolean deposer(int objet){
+        return this.sacADos.retirer(objet);
+    }
+    
+    public boolean fouiller(){
+        if(this.pa > 0){
+            this.pa--;
+            return true;
+        }else{
+            System.out.println("Vous n'avez pas assez de PA.");
+            return false;
+        }
+    }
 
 }//End of class
