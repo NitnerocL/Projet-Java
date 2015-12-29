@@ -23,12 +23,24 @@ public class Carte {
 
         //Répartition des 1000 planches sur la carte
         for (int i = 0; i < 1000; i++) {
-            this.tableau[ra.nextInt(25)][ra.nextInt(25)].ajouterPlanche();
+            int x = 13;
+            int y = 13;
+            while(x == 13 && y == 13){
+                x = ra.nextInt(25);
+                y = ra.nextInt(25);
+            }
+            this.tableau[x][y].ajouterPlanche();
         }
         
         //Répartition des 500 plaques de métal sur la carte
         for (int i = 0; i < 500; i++) {
-            this.tableau[ra.nextInt(25)][ra.nextInt(25)].ajouterMetal();
+            int x = 13;
+            int y = 13;
+            while(x == 13 && y == 13){
+                x = ra.nextInt(25);
+                y = ra.nextInt(25);
+            }
+            this.tableau[x][y].ajouterMetal();
         }
     }
     ////////////////////////////////////////////////////////////////////////////

@@ -17,8 +17,9 @@ public class Jeu {
 ////////////////////Attributs privés////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-    LinkedList<Citoyen> aliveJoueurs = new LinkedList<>();
-    LinkedList<Citoyen> lastDeaths = new LinkedList<>();
+    private LinkedList<Citoyen> aliveJoueurs = new LinkedList<>();
+    private LinkedList<Citoyen> lastDeaths = new LinkedList<>();
+    private int joueur;//le joueur dont c'est le tour
     private int jour; //Jour 1, jour 2...
     private int heure; //L'heure représente le tour (s'il est 6h, c'est le troisième tour de la journée.
 
@@ -48,6 +49,49 @@ public class Jeu {
         //////////////Initialisation de l'heure et du jour//////////////////////
         this.heure = 0 ; // Midnight !
         this.jour = 1 ; //First day
+        this.joueur=0;
+       
+    }
+    ////////////////////////////////////////////////////////////////////////////
+    // Méthodes privées
+    ////////////////////////////////////////////////////////////////////////////
+    private void menuVille(Citoyen joueur){
+        boolean erreur = true;
+        
+        System.out.println("1. Inventaire");
+        System.out.println("2. Puit");
+        System.out.println("3. Porte");
+        System.out.println("4. Chantier");
+        System.out.println("5. Entrepôt");
+        System.out.println("6. Explorer le vaste monde");
+        System.out.println("7. Terminer tour");
+        
+        Scanner sc = new Scanner(System.in);
+        while(erreur){
+            erreur = false;
+            int saisie = sc.nextInt();
+            switch(saisie){
+                case 1:
+                    System.out.println(joueur.getSacADos());
+                    if(joueur.getSacADos().contient(Objets.GOURDE)){
+                        System.out.println("1. Boire");
+                    }
+                    
                 
+            }
+    }}
+    
+    ////////////////////////////////////////////////////////////////////////////
+    // Méthodes publiques
+    ////////////////////////////////////////////////////////////////////////////
+    public void tour(Citoyen joueur){
+        joueur.ajouterPA(4);
+        boolean finTour = false;
+        while(!finTour){
+            System.out.println("Que voulez vous faire ?");
+            if (joueur.estdDansVille()){
+                System.out.println("1. ");                
+            }
+        }
     }
 }

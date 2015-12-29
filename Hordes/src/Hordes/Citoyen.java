@@ -61,6 +61,14 @@ public class Citoyen {
     public boolean getDejaBu() {
         return this.dejaBu;
     }
+    
+    public Inventaire getSacADos(){
+        return this.getSacADos();
+    }
+    
+    public void ajouterPA(int n){
+        this.pa += n;
+    }
     ////////////////////////////////////////////////////////////////////////////
     // Méthodes privées
     ////////////////////////////////////////////////////////////////////////////
