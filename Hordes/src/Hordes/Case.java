@@ -46,6 +46,10 @@ public class Case {
     public boolean getFouillee() {
         return this.fouillee;
     }
+    
+    public int getNombreZombies(){
+        return this.nombreZombies;
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     // Méthodes publiques
