@@ -205,7 +205,7 @@ public class Citoyen {
         return this.sacADos.retirer(objet);
     }
     
-    public boolean fouiller(){
+    public boolean action(){
         if(this.pa > 0){
             this.pa--;
             return true;
