@@ -63,21 +63,21 @@ public class Citoyen {
     }
     
     public Inventaire getSacADos(){
-        return this.getSacADos();
+        return this.sacADos;
     }
     
     public void ajouterPA(int n){
         this.pa += n;
+        if(this.pa>10){
+            this.pa = 10;
+        }
     }
     ////////////////////////////////////////////////////////////////////////////
     // Méthodes privées
     ////////////////////////////////////////////////////////////////////////////
     private boolean boire(){
         if(!this.dejaBu){
-            this.pa += 6;
-            if(this.pa > 10){
-                this.pa = 10;
-            }
+            this.ajouterPA(6);
             this.dejaBu = true;
             return true;
         }else{
@@ -117,6 +117,7 @@ public class Citoyen {
                     && (this.position[1] + deplacement[direction][1] < 25)) {
                 this.position[0] += deplacement[direction][0];
                 this.position[1] += deplacement[direction][1];
+                this.pa--;
                 return true;
             } else {
                 System.out.println("Vous ne pouvez pas aller dans cette direction ! (vous sortez du plateau)");
@@ -131,7 +132,7 @@ public class Citoyen {
 
     public boolean combattre() {
         if (this.pa > 0) {
-            this.pa -= 1;
+            this.pa --;
             if (Math.random() < 0.1) {
                 System.out.println("Vous avez été blessé et perdez 10 PV");
                 this.pv -= 10;
@@ -170,10 +171,7 @@ public class Citoyen {
         } else if (objet == Objets.NOURRITURE ) {
             if (!this.dejaMange) {
                 if (this.sacADos.retirer(objet)) {
-                    this.pa += 6;
-                    if (this.pa > 10) {
-                        this.pa = 10;
-                    }
+                    this.ajouterPA(6);
                     this.dejaMange = true;
                     return true;
                 }
@@ -205,9 +203,9 @@ public class Citoyen {
         return this.sacADos.retirer(objet);
     }
     
-    public boolean action(){
-        if(this.pa > 0){
-            this.pa--;
+    public boolean action(int n){
+        if(this.pa >= n){
+            this.pa-=n;
             return true;
         }else{
             System.out.println("Vous n'avez pas assez de PA.");

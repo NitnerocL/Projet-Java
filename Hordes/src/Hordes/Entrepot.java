@@ -54,6 +54,10 @@ public class Entrepot {
         this.entrepot[idObjet] += quantite;
     }
 
+    public boolean contient(int idObjet) {
+        return this.entrepot[idObjet] > 0;
+    }
+
     /**
      * Permet de retirer un objet de l'entrepôt
      *
@@ -67,8 +71,13 @@ public class Entrepot {
             this.entrepot[idObjet] -= quantite;
             return true;
         } else {
-            System.out.println("Vous n'avez pas assez de " + Objets.objetToString(idObjet, true));
+            System.out.println("Il n'y a pas asser de " + Objets.objetToString(idObjet, true));
             return false;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Planches : " + this.entrepot[Objets.PLANCHES] + "\nPlaques de métal : " + this.entrepot[Objets.METAL] + "\nRepas : " + this.entrepot[Objets.NOURRITURE];
     }
 }//End of class

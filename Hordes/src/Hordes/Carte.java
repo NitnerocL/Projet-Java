@@ -49,4 +49,21 @@ public class Carte {
     public Case[][] getCarte(){
         return this.tableau;
     }
+    
+    public void afficherCarteJoueur(int[] pos){
+        for(int i=0; i<25;i++){
+            String ligne = "|";
+            for(int j=0;j<25;j++){
+                if(i==pos[0] && j == pos[1]){
+                    ligne += "X|";
+                }else if(i==13 && j==13){
+                    ligne += "V|";
+                }else{
+                    ligne += " |";
+                }
+            }
+            System.out.println(ligne);
+        }
+        System.out.println("\nV : ville\nX : joueur");
+    }
 }//End of class

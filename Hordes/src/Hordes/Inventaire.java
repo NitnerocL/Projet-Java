@@ -49,7 +49,7 @@ public class Inventaire {
     public String toString() {
         String chaine = new String();
         for (int objet : this.objets) {
-            chaine += Objets.objetToString(objet, false);
+            chaine += Objets.objetToString(objet, false) +" | ";
         }
         return chaine;
     }

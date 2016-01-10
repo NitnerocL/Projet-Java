@@ -59,7 +59,14 @@ public boolean getOpenedDoor(){
             return true; // All was right.
         }
     }
+    
+public Defense[] getDefenses(){
+    return this.defenses;
+}
 
+public Entrepot getBanque(){
+    return this.banque;
+}
     /**
      * Ferme la porte.
      *
@@ -125,5 +132,12 @@ public boolean getOpenedDoor(){
         }
         return false; //Something was wrong.
 
+    }
+    
+    public void afficherConstructions(){
+        System.out.println(String.format("%-40s", "Nom")+" | "+String.format("%-12s", "Etat") + " | " + String.format("%-7s", "Avancement")+" | " + String.format("%-3s", "Def")+" | "+String.format("%-19s", "Coût")+" | "+String.format("%-12s", "Coût"));
+        for(int i=0; i<7;i++){
+            System.out.println(this.defenses[i]);       
+        }
     }
 }

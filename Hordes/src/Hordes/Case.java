@@ -101,7 +101,7 @@ public class Case {
 
     @Override
     public String toString() {
-        return (this.nombreMetal + "plaques de métal" + this.nombrePlanches + "planches");
+        return (this.nombreMetal + " plaques de métal et " + this.nombrePlanches + " planches");
     }
 
 }//End of class

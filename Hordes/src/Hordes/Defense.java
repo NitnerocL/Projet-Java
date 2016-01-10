@@ -59,6 +59,19 @@ public class Defense {
     ////////////////////////////////////////////////////////////////////////////
     // Méthodes publiques
     ////////////////////////////////////////////////////////////////////////////
+    @Override
+    public String toString() {
+        String chaine = String.format("%-40s",this.nom) + " | ";
+        if (this.isBuilt()) {
+            chaine += String.format("%-12s", "Terminé") + " | " + String.format("%-7s", this.avancement + "/" + this.coutPA)+" | " + String.format("%-3s", this.pointsDefense);
+        }else if(this.constructionCommencee()){
+            chaine += String.format("%-12s", "En cours") + " | " + String.format("%-7s", this.avancement + "/" + this.coutPA)+" | " + String.format("%-3s", this.pointsDefense);
+        }else{
+            chaine += String.format("%-12s", "Pas commencé") + " | " + String.format("%-7s", this.avancement + "/" + this.coutPA)+" | " + String.format("%-3s", this.pointsDefense)+" | "+String.format("%-3s", this.coutMetal)+" plaques de métal | "+String.format("%-3s", this.coutPlanches)+" planches";
+        }
+        return chaine;
+    }
+
     /**
      * Indique si la défense est construite ou non
      *
