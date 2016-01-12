@@ -59,7 +59,7 @@ public class Jeu {
     ////////////////////////////////////////////////////////////////////////////
     // Méthodes privées
     ////////////////////////////////////////////////////////////////////////////
-    private void menuVille(Citoyen joueur) {
+    private boolean menuVille(Citoyen joueur) {
         Scanner sc = new Scanner(System.in);
         boolean erreur = true;
         while (erreur) {
@@ -98,25 +98,53 @@ public class Jeu {
                     break;
 
                 case 7:
-                    break;
+                    return true;
 
                 default:
                     System.out.println("Saisie invalide.");
                     menuVille(joueur);
+                    break;
             }
         }
+        return false;
     }
 
-    private void menuExterieur(Citoyen joueur) {
+    private boolean menuExterieur(Citoyen joueur) {
         Scanner sc = new Scanner(System.in);
         System.out.println("1. Inventaire");
         System.out.println("2. Fouiller la zone");
-        System.out.println("3. Porte");
-        System.out.println("4. Chantier");
-        System.out.println("5. Entrepôt");
-        System.out.println("6. Explorer le vaste monde");
-        System.out.println("7. Terminer tour");
+        System.out.println("3. Se battre");
+        System.out.println("4. Se déplacer");
+        System.out.println("5. Terminer tour");
         int saisie = sc.nextInt();
+        switch (saisie) {
+            case 1:
+                actionInventaire(joueur);
+                break;
+            case 2:
+                if (joueur.action(1)) {
+                    int[] pos = joueur.getPosition();
+                    carte.getCarte()[pos[0]][pos[1]].fouiller();
+                }
+                break;
+            case 3:
+                if (joueur.combattre()) {
+                    int[] pos = joueur.getPosition();
+                    carte.getCarte()[pos[0]][pos[1]].combat();
+                }
+                break;
+            case 4:
+                actionExplorer(joueur);
+                break;
+            case 5:
+                return true;
+            default :
+                System.out.println("Saisie invalide.");
+                menuExterieur(joueur);
+                break;
+
+        }
+        return false;
     }
 
     private void actionInventaire(Citoyen joueur) {
@@ -211,6 +239,7 @@ public class Jeu {
         Scanner sc = new Scanner(System.in);
         int saisie;
         this.ville.afficherConstructions();
+        System.out.println("Vous avez " + this.joueur.getPa() + "PA");
         System.out.println("Points de défense : " + this.ville.calculPointsDeDefense());
         System.out.println("L'entrepôt contient " + ville.getBanque().getNombreMetal() + " plaques de métal et " + ville.getBanque().getNombrePlanches() + " planches.");
         System.out.println("1. Construire un mur d'enceinte");
@@ -337,6 +366,9 @@ public class Jeu {
                     joueur.seDeplacer((saisie + 2) % 4); //On effectue alors le déplacement inverse
                     joueur.ajouterPA(1);
                     System.out.println("Vous ne pouvez pas entrer dans la ville : la porte est fermée !");
+                }else if(!joueur.estdDansVille()){
+                    int[] pos = joueur.getPosition();
+                    carte.getCarte()[pos[0]][pos[1]].popZombies();
                 }
                 System.out.println("Il vous reste " + joueur.getPa() + "PA.");
                 actionExplorer(joueur);
@@ -356,9 +388,12 @@ public class Jeu {
         joueur.ajouterPA(4);
         boolean finTour = false;
         while (!finTour) {
+            System.out.println("Il vous reste "+joueur.getPa()+"PA.");
             System.out.println("Que voulez vous faire ?");
             if (joueur.estdDansVille()) {
-                System.out.println("1. ");
+                finTour = menuVille(joueur);
+            }else{
+                finTour = menuExterieur(joueur);
             }
         }
 

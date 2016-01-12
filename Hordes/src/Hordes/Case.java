@@ -98,6 +98,12 @@ public class Case {
     public void fouiller() {
         this.fouillee = true;
     }
+    
+    public void combat(){
+        if(this.nombreZombies >0){
+            this.nombreZombies--;
+        }
+    }
 
     @Override
     public String toString() {
