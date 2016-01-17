@@ -5,6 +5,7 @@
  */
 package Hordes;
 
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -19,7 +20,15 @@ public class Carte {
     // Constructeurs
     ////////////////////////////////////////////////////////////////////////////
     public Carte() {
+        for(int i =0;i<25;i++){
+            for(int j =0;j<25;j++){
+                this.tableau[i][j] = new Case();
+            }
+        }
+        
+        
         Random ra = new Random();
+        
 
         //Répartition des 1000 planches sur la carte
         for (int i = 0; i < 1000; i++) {
@@ -48,6 +57,10 @@ public class Carte {
     ////////////////////////////////////////////////////////////////////////////
     public Case[][] getCarte(){
         return this.tableau;
+    }
+    
+    public Case getCase(int[] position){
+        return this.tableau[position[0]][position[1]];
     }
     
     public void afficherCarteJoueur(int[] pos){

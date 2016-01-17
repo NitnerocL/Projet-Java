@@ -41,9 +41,11 @@ public class Ville {
 /////////////////////////////////////////////////////////////
 ///////////// Méthodes publiques ///////////////////////////
 ///////////////////////////////////////////////////////////
-public boolean getOpenedDoor(){
-    return this.openedDoor;
-}
+
+    public boolean getOpenedDoor() {
+        return this.openedDoor;
+    }
+
     /**
      * Ouvre la porte (passe le booléen à vrai).
      *
@@ -56,17 +58,23 @@ public boolean getOpenedDoor(){
         } else {
             openedDoor = false;
             System.out.println("La porte a été ouverte !");
+            this.openedDoor = true;
             return true; // All was right.
         }
     }
-    
-public Defense[] getDefenses(){
-    return this.defenses;
-}
 
-public Entrepot getBanque(){
-    return this.banque;
-}
+    public Defense[] getDefenses() {
+        return this.defenses;
+    }
+
+    public int getPointsDefense() {
+        return this.pointsDefense;
+    }
+
+    public Entrepot getBanque() {
+        return this.banque;
+    }
+
     /**
      * Ferme la porte.
      *
@@ -78,6 +86,7 @@ public Entrepot getBanque(){
             return false;
         } else {
             System.out.println("La porte a été fermée");
+            this.openedDoor=false;
             return true;
         }
 
@@ -133,11 +142,11 @@ public Entrepot getBanque(){
         return false; //Something was wrong.
 
     }
-    
-    public void afficherConstructions(){
-        System.out.println(String.format("%-40s", "Nom")+" | "+String.format("%-12s", "Etat") + " | " + String.format("%-7s", "Avancement")+" | " + String.format("%-3s", "Def")+" | "+String.format("%-19s", "Coût")+" | "+String.format("%-12s", "Coût"));
-        for(int i=0; i<7;i++){
-            System.out.println(this.defenses[i]);       
+
+    public void afficherConstructions() {
+        System.out.println(String.format("%-40s", "Nom") + " | " + String.format("%-12s", "Etat") + " | " + String.format("%-7s", "Avancement") + " | " + String.format("%-3s", "Def") + " | " + String.format("%-19s", "Coût") + " | " + String.format("%-12s", "Coût"));
+        for (int i = 0; i < 7; i++) {
+            System.out.println(this.defenses[i]);
         }
     }
 }

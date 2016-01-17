@@ -6,6 +6,7 @@
 package Hordes;
 
 import java.util.LinkedList;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -21,8 +22,7 @@ public class Jeu {
     private LinkedList<Citoyen> lastDeaths = new LinkedList<>();
     private Carte carte = new Carte();
     private Ville ville = new Ville();
-    private Citoyen joueur;
-    private int numjoueur;//le joueur dont c'est le tour
+    private int joueur;//le joueur dont c'est le tour
     private int jour; //Jour 1, jour 2...
     private int heure; //L'heure représente le tour (s'il est 6h, c'est le troisième tour de la journée.
 
@@ -121,16 +121,19 @@ public class Jeu {
             case 1:
                 actionInventaire(joueur);
                 break;
-            case 2:
+            case 2: //Rajouter le fait de pouvoir voir et ramasser les items !
                 if (joueur.action(1)) {
                     int[] pos = joueur.getPosition();
                     carte.getCarte()[pos[0]][pos[1]].fouiller();
                 }
                 break;
             case 3:
-                if (joueur.combattre()) {
-                    int[] pos = joueur.getPosition();
-                    carte.getCarte()[pos[0]][pos[1]].combat();
+                if (carte.getCase(joueur.getPosition()).resteZombies()) {
+                    if (joueur.combattre()) {
+                        carte.getCase(joueur.getPosition()).combat();
+                    }
+                }else{
+                    System.out.println("Il n'y a pas de zombies sur cette case !");
                 }
                 break;
             case 4:
@@ -138,7 +141,7 @@ public class Jeu {
                 break;
             case 5:
                 return true;
-            default :
+            default:
                 System.out.println("Saisie invalide.");
                 menuExterieur(joueur);
                 break;
@@ -239,7 +242,7 @@ public class Jeu {
         Scanner sc = new Scanner(System.in);
         int saisie;
         this.ville.afficherConstructions();
-        System.out.println("Vous avez " + this.joueur.getPa() + "PA");
+        System.out.println("Vous avez " + joueur.getPa() + "PA");
         System.out.println("Points de défense : " + this.ville.calculPointsDeDefense());
         System.out.println("L'entrepôt contient " + ville.getBanque().getNombreMetal() + " plaques de métal et " + ville.getBanque().getNombrePlanches() + " planches.");
         System.out.println("1. Construire un mur d'enceinte");
@@ -351,7 +354,7 @@ public class Jeu {
 
     private void actionExplorer(Citoyen joueur) {
         Scanner sc = new Scanner(System.in);
-        if ((ville.getOpenedDoor()) || !joueur.estdDansVille()) { //Si le joueur n'est pas dans la ville, ou qu'il est dans la ville est la porte est ouverte
+        if ((ville.getOpenedDoor()) || !joueur.estdDansVille()) { //Si le joueur n'est pas dans la ville, ou qu'il est dans la ville et la porte est ouverte
             carte.afficherCarteJoueur(joueur.getPosition());
             System.out.println("1. Gauche");
             System.out.println("2. Haut");
@@ -360,25 +363,72 @@ public class Jeu {
             System.out.println("5. Annuler");
             int saisie = sc.nextInt();
             if (saisie > 0 && saisie < 5) {
-                joueur.seDeplacer(--saisie);
-                if (joueur.estdDansVille() && !ville.getOpenedDoor()) { //Si le joueur essaie de rentrer en ville mais que la porte est fermée
-                    joueur.ajouterPA(1);
-                    joueur.seDeplacer((saisie + 2) % 4); //On effectue alors le déplacement inverse
-                    joueur.ajouterPA(1);
-                    System.out.println("Vous ne pouvez pas entrer dans la ville : la porte est fermée !");
-                }else if(!joueur.estdDansVille()){
-                    int[] pos = joueur.getPosition();
-                    carte.getCarte()[pos[0]][pos[1]].popZombies();
+                if (carte.getCase(joueur.getPosition()).resteZombies()) {
+                    System.out.println("Vous ne pouvez pas quitter cette case car il reste " + carte.getCase(joueur.getPosition()).getNombreZombies() + " zombie(s).");
+                } else {
+                    carte.getCase(joueur.getPosition()).joueurSort();
+                    joueur.seDeplacer(--saisie);
+                    if (joueur.estdDansVille() && !ville.getOpenedDoor()) { //Si le joueur essaie de rentrer en ville mais que la porte est fermée
+                        joueur.ajouterPA(1);
+                        joueur.seDeplacer((saisie + 2) % 4); //On effectue alors le déplacement inverse
+                        joueur.ajouterPA(1);
+                        System.out.println("Vous ne pouvez pas entrer dans la ville : la porte est fermée !");
+                    } else if (!joueur.estdDansVille()) {
+                        carte.getCase(joueur.getPosition()).joueurEntre();
+                        if (carte.getCase(joueur.getPosition()).getNombreJoueurs() == 1) {
+                            carte.getCase(joueur.getPosition()).popZombies();
+                        }
+                        System.out.println("Il y a " + carte.getCase(joueur.getPosition()).getNombreZombies() + " zombies sur cette case.");
+                    }
+                    System.out.println("Il vous reste " + joueur.getPa() + "PA.");
+                    //actionExplorer(joueur);
                 }
-                System.out.println("Il vous reste " + joueur.getPa() + "PA.");
-                actionExplorer(joueur);
             } else if (saisie == 5) {
-                menuVille(joueur);
+                //return;
             }
         } else {
             System.out.println("La porte de la ville doit être ouverte pour pouvoir sortir !");
             actionPorte(joueur);
         }
+    }
+
+    private void tuer(Citoyen joueur) {
+        this.aliveJoueurs.remove(joueur);
+        this.lastDeaths.addFirst(joueur);
+    }
+
+    private int jourSuivant() {
+        int mortsExterieur = 0;
+        for (Citoyen citoyen : aliveJoueurs) {
+            if (!citoyen.estdDansVille()) {
+                System.out.println(citoyen.getPseudo() + " était en dehors de la ville et a été dévoré par les zombies.");
+                tuer(citoyen);
+                mortsExterieur++;
+            }
+        }
+        Random ra = new Random();
+        int mortsVille = 0;
+        int nbZombies = (ra.nextInt(10)) + (10 * (this.jour - 1));
+        System.out.println("La ville possède " + ville.getPointsDefense() + " points de défense.");
+        System.out.println(nbZombies + " zombies attaquent !");
+        if (ville.getOpenedDoor() || nbZombies > ville.getPointsDefense()) {
+            System.out.println("Les zombies sont entrés dans la ville et ont tué ");
+            mortsVille = (this.aliveJoueurs.size() + 1) / 2;
+            for (int i = 0; i < mortsVille; i++) {
+                Citoyen mort = this.aliveJoueurs.get(ra.nextInt(this.aliveJoueurs.size()));
+                tuer(mort);
+                System.out.print(mort.getPseudo());
+                if (i + 2 == mortsVille) {
+                    System.out.print(" et ");
+                } else if (i + 2 < mortsVille) {
+                    System.out.print(", ");
+                }
+            }
+            System.out.println(".");
+        } else {
+            System.out.println("Les zombies n'ont pas réussi à entrer. Personne n'est mort.");
+        }
+        return mortsExterieur + mortsVille;
     }
 ////////////////////////////////////////////////////////////////////////////
 // Méthodes publiques
@@ -388,14 +438,48 @@ public class Jeu {
         joueur.ajouterPA(4);
         boolean finTour = false;
         while (!finTour) {
-            System.out.println("Il vous reste "+joueur.getPa()+"PA.");
+            System.out.println(joueur.getPseudo());
+            System.out.println("Jour " + this.jour + ", " + this.heure + "h.");
+            System.out.println("Il vous reste " + joueur.getPa() + " PA.");
+            System.out.println("Vous avez "+joueur.getPv() + " PV.");
             System.out.println("Que voulez vous faire ?");
             if (joueur.estdDansVille()) {
                 finTour = menuVille(joueur);
-            }else{
+            } else {
                 finTour = menuExterieur(joueur);
             }
         }
+
+    }
+
+    public void jouer() {
+        int nbDerniersMorts = 0;
+        while (!this.aliveJoueurs.isEmpty()) {
+            this.tour(this.aliveJoueurs.get(joueur));
+            this.joueur++;
+            if (this.joueur >= this.aliveJoueurs.size()) {
+                this.joueur = 0;
+                this.heure += 2;
+                if (this.heure == 12) {
+                    heure = 0;
+                    jour++;
+                    nbDerniersMorts = jourSuivant();
+                }
+            }
+        }
+        System.out.println("Tous les joueurs sont morts. ");
+
+        System.out.print("Le(s) vainqueur(s) est/sont ");
+
+        for (int i = nbDerniersMorts; i > 0; i--) {
+            System.out.print(this.lastDeaths.pop().getPseudo());
+            if (i == 2) {
+                System.out.print(" et ");
+            } else if (i > 2) {
+                System.out.print(", ");
+            }
+        }
+        System.out.print(" qui a/ont survécu " + (this.jour - 1) + " jours.");
 
     }
 

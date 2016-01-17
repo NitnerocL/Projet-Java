@@ -28,7 +28,7 @@ public class Citoyen {
     public Citoyen(String pseudo) {
         this.pseudo = pseudo;
         this.pv = 100;
-        this.pa = 6;
+        this.pa = 2;
         this.sacADos = new Inventaire();
         this.position[0] = this.position[1] = 13;
         this.dejaBu = false;

@@ -19,11 +19,20 @@ public class Case {
     private int nombreZombies;
     private int nombrePlanches;
     private int nombreMetal;
+    private int nombreJoueurs;
     private boolean fouillee;
 
     ////////////////////////////////////////////////////////////////////////////
     // Constructeurs
     ////////////////////////////////////////////////////////////////////////////
+    public Case(){
+        this.nombreMetal = 0;
+        this.nombrePlanches = 0;
+        this.nombreZombies = 0;
+        this.nombreJoueurs = 0;
+        this.fouillee = false;
+    }
+    
     public Case(int planches, int metal) {
         this.nombreMetal = metal;
         this.nombrePlanches = planches;
@@ -50,6 +59,10 @@ public class Case {
     public int getNombreZombies(){
         return this.nombreZombies;
     }
+    
+    public int getNombreJoueurs(){
+        return this.nombreJoueurs;
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     // Méthodes publiques
@@ -65,6 +78,10 @@ public class Case {
                 this.nombreZombies = alea + 1;
             }
         }
+    }
+    
+    public boolean resteZombies(){
+        return this.nombreZombies > 0;
     }
 
     public void ajouterPlanche() {
@@ -103,6 +120,14 @@ public class Case {
         if(this.nombreZombies >0){
             this.nombreZombies--;
         }
+    }
+    
+    public void joueurEntre(){
+        this.nombreJoueurs++;
+    }
+    
+    public void joueurSort(){
+        this.nombreJoueurs--;
     }
 
     @Override
