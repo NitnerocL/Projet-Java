@@ -297,11 +297,11 @@ public class Jeu {
                 while (erreur) {
                     System.out.println("Combien de points d'action voulez-vous investir ? (0 pour annuler)");
                     saisie = sc.nextInt();
-                    if (saisie >= 0 && joueur.getPa() <= saisie) {
+                    if (saisie >= 0 && joueur.getPa() >= saisie) {
                         if (ville.construireDefense(defChoisie, saisie)) {
                             erreur = !joueur.action(saisie);
                         }
-                    }else{
+                    } else {
                         System.out.println("Vous n'avez pas assez de PA !");
                     }
                 }
@@ -475,14 +475,14 @@ public class Jeu {
 ////////////////////////////////////////////////////////////////////////////
 
     public void tour(Citoyen joueur) {
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         joueur.initTour();
         boolean finTour = false;
         while (!finTour) {
-            System.out.println(joueur.getPseudo());
+            System.out.println("\n"+joueur.getPseudo());
             System.out.println("Jour " + this.jour + ", " + this.heure + "h.");
-            System.out.println("Il vous reste " + joueur.getPa() + " PA.");
-            System.out.println("Vous avez " + joueur.getPv() + " PV.");
-            System.out.println("Que voulez vous faire ?");
+            System.out.println(joueur.getPa() + " PA | " +joueur.getPv() + " PV");
+            System.out.println("\nQue voulez vous faire ?");
             if (joueur.estDansVille()) {
                 finTour = menuVille(joueur);
             } else {
@@ -496,7 +496,7 @@ public class Jeu {
                 System.out.println("Vous n'avez pas pris votre drogue aujourd'hui ! Vous perdez 5PV.");
                 joueur.blesser(5);
                 testPV(joueur);
-
+                
             }
         }
 
@@ -510,7 +510,7 @@ public class Jeu {
             if (this.joueur >= this.aliveJoueurs.size()) {
                 this.joueur = 0;
                 this.heure += 2;
-                if (this.heure == 12) {
+                if (this.heure == 24) {
                     heure = 0;
                     jour++;
                     nbDerniersMorts = jourSuivant();
