@@ -21,6 +21,8 @@ public class Citoyen {
     private int[] position = new int[2];
     private boolean dejaMange;
     private boolean dejaBu;
+    private boolean dependant; //true si le joueur a commencé à boire des boissons énergisantes et qu'il doit donc maintenant en prendre à chaque tour
+    private int tempsSansDrogue; //compte le nombre de tours qu'on peut encore passer sans prendre de drogue
 
     ////////////////////////////////////////////////////////////////////////////
     // Constructeurs
@@ -33,6 +35,8 @@ public class Citoyen {
         this.position[0] = this.position[1] = 13;
         this.dejaBu = false;
         this.dejaMange = false;
+        dependant = false;
+        tempsSansDrogue = 0;
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -61,31 +65,48 @@ public class Citoyen {
     public boolean getDejaBu() {
         return this.dejaBu;
     }
-    
-    public Inventaire getSacADos(){
-        return this.sacADos;
+
+    public boolean getDependant() {
+        return this.dependant;
+    }
+
+    public int getTempsSansDrogue() {
+        return this.tempsSansDrogue;
     }
     
-    public void ajouterPA(int n){
+    public void decrementDrogue(){
+        this.tempsSansDrogue--;
+    }
+
+    public Inventaire getSacADos() {
+        return this.sacADos;
+    }
+
+    public void ajouterPA(int n) {
         this.pa += n;
-        if(this.pa>10){
+        if (this.pa > 10) {
             this.pa = 10;
         }
     }
+    
+    public void blesser(int n){
+        this.pv-=n;
+    }
+
     ////////////////////////////////////////////////////////////////////////////
     // Méthodes privées
     ////////////////////////////////////////////////////////////////////////////
-    private boolean boire(){
-        if(!this.dejaBu){
+    private boolean boire() {
+        if (!this.dejaBu) {
             this.ajouterPA(6);
             this.dejaBu = true;
             return true;
-        }else{
+        } else {
             System.out.println("Vous avez déjà bu aujourd'hui !");
             return false;
         }
     }
-    
+
     ////////////////////////////////////////////////////////////////////////////
     // Méthodes publiques
     ////////////////////////////////////////////////////////////////////////////
@@ -132,10 +153,10 @@ public class Citoyen {
 
     public boolean combattre() {
         if (this.pa > 0) {
-            this.pa --;
+            this.pa--;
             if (Math.random() < 0.1) {
                 System.out.println("Vous avez été blessé et perdez 10 PV");
-                this.pv -= 10;
+                this.blesser(10);
             }
             return true;
         } else {
@@ -143,8 +164,7 @@ public class Citoyen {
             return false;
         }
     }
-    
-    
+
     public boolean puiserEau() {
         if (this.estDansVille()) {
             return this.sacADos.ajouter(Objets.GOURDE);
@@ -154,64 +174,75 @@ public class Citoyen {
             return false;
         }
     }
-    
-    public boolean boireVille(){
-        if (this.estDansVille()){
+
+    public boolean boireVille() {
+        if (this.estDansVille()) {
             return this.boire();
-        }else{
+        } else {
             System.out.println("Vous n'êtes pas dans la ville.");
             return false;
         }
     }
-    
+
     public boolean utiliserObjet(int objet) {
-        if (objet >= 0 && objet <2) {
+        if (objet >= 0 && objet < 2) {
             System.out.println("Vous ne pouvez pas utiliser cet objet");
             return false;
-        } else if (objet == Objets.NOURRITURE ) {
+        } else if (objet == Objets.NOURRITURE) {
             if (!this.dejaMange) {
                 if (this.sacADos.retirer(objet)) {
                     this.ajouterPA(6);
                     this.dejaMange = true;
                     return true;
                 }
-            }else{
+            } else {
                 System.out.println("Vous avez déjà mangé aujourd'hui !");
                 return false;
             }
-        }else if (objet == Objets.GOURDE){
+        } else if (objet == Objets.GOURDE) {
             if (!this.dejaBu) {
-                if (this.sacADos.retirer(objet)){
+                if (this.sacADos.retirer(objet)) {
                     return this.boire();
                 }
-            }else{
+            } else {
                 System.out.println("Vous avez déjà bu aujourd'hui !");
                 return false;
             }
-        }else{
+        } else if (objet == Objets.DROGUE) {
+            if (this.sacADos.retirer(objet)) {
+                this.ajouterPA(4);
+                this.dependant = true;
+                this.tempsSansDrogue = 3;
+            }
+        } else {
             System.out.println("Erreur ! Cet objet n'existe pas");
             return false;
         }
         return false;
     }
-    
-    public boolean ramasser(int objet){
+
+    public boolean ramasser(int objet) {
         return this.sacADos.ajouter(objet);
     }
-    
-    public boolean deposer(int objet){
+
+    public boolean deposer(int objet) {
         return this.sacADos.retirer(objet);
     }
-    
-    public boolean action(int n){
-        if(this.pa >= n){
-            this.pa-=n;
+
+    public boolean action(int n) {
+        if (this.pa >= n) {
+            this.pa -= n;
             return true;
-        }else{
+        } else {
             System.out.println("Vous n'avez pas assez de PA.");
             return false;
         }
     }
-
+    
+    public void initTour(){
+        this.ajouterPA(4);
+        this.dejaMange=false;
+        this.dejaBu = true;
+    }
 
 }//End of class

@@ -28,7 +28,7 @@ public class Carte {
         
         
         Random ra = new Random();
-        
+        //--Mettre tout ça dans une grande boucle --//
 
         //Répartition des 1000 planches sur la carte
         for (int i = 0; i < 1000; i++) {
@@ -50,6 +50,17 @@ public class Carte {
                 y = ra.nextInt(25);
             }
             this.tableau[x][y].ajouterObjet(Objets.METAL);
+        }
+        
+        //Répartition des 100 boissons énergisantes sur la carte
+        for (int i = 0; i < 100; i++) {
+            int x = 13;
+            int y = 13;
+            while(x == 13 && y == 13){
+                x = ra.nextInt(25);
+                y = ra.nextInt(25);
+            }
+            this.tableau[x][y].ajouterObjet(Objets.DROGUE);
         }
     }
     ////////////////////////////////////////////////////////////////////////////

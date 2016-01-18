@@ -133,6 +133,7 @@ public class Jeu {
                 if (carte.getCase(joueur.getPosition()).resteZombies()) {
                     if (joueur.combattre()) {
                         carte.getCase(joueur.getPosition()).combat();
+                        testPV(joueur);
                     }
                 } else {
                     System.out.println("Il n'y a pas de zombies sur cette case !");
@@ -473,12 +474,21 @@ public class Jeu {
         }
         return mortsExterieur + mortsVille;
     }
+
+    private boolean testPV(Citoyen joueur) {
+        if (joueur.getPv() < 0) {
+            tuer(joueur);
+            System.out.println("Malheureusement, vous n'avez plus de vie et succombez à vos blessures.");
+            return false;
+        }
+        return true;
+    }
 ////////////////////////////////////////////////////////////////////////////
 // Méthodes publiques
 ////////////////////////////////////////////////////////////////////////////
 
     public void tour(Citoyen joueur) {
-        joueur.ajouterPA(4);
+        joueur.initTour();
         boolean finTour = false;
         while (!finTour) {
             System.out.println(joueur.getPseudo());
@@ -490,6 +500,16 @@ public class Jeu {
                 finTour = menuVille(joueur);
             } else {
                 finTour = menuExterieur(joueur);
+            }
+        }
+        if (joueur.getDependant()) {
+            if (joueur.getTempsSansDrogue() > 0) {
+                joueur.decrementDrogue();
+            } else {
+                System.out.println("Vous n'avez pas pris votre drogue aujourd'hui ! Vous perdez 5PV.");
+                joueur.blesser(5);
+                testPV(joueur);
+
             }
         }
 
