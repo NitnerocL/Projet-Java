@@ -562,6 +562,13 @@ public class Jeu {
         System.out.println("\nQue voulez vous faire ?");
     }
 
+    private void initTour(Citoyen joueur){
+        joueur.ajouterPA(4);
+        if(this.heure==0){//si c'est le début du jour
+            joueur.setDejaBu(false);
+            joueur.setDejaMange(false);
+        }
+    }
     ////////////////////////////////////////////////////////////////////////////
     // Méthodes publiques
     ////////////////////////////////////////////////////////////////////////////
@@ -573,7 +580,7 @@ public class Jeu {
      */
     public void tour(Citoyen joueur) {
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-        joueur.initTour();
+        initTour(joueur);
         boolean finTour = false;
         while (!finTour) {
             enteteTour(joueur);

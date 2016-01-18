@@ -23,7 +23,7 @@ public class Carte {
      * 1000 planches, 500 plaques de métal et 100 drogues.
      */
     public Carte() {
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < 25; i++) {//On
             for (int j = 0; j < 25; j++) {
                 this.tableau[i][j] = new Case();
             }
