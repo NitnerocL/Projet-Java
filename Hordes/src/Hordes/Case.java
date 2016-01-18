@@ -18,8 +18,6 @@ public class Case {
     ////////////////////////////////////////////////////////////////////////////
     private int nombreZombies;
     private Entrepot objets;
-    //private int nombrePlanches;
-    //private int nombreMetal;
     private int nombreJoueurs;
     private boolean fouillee;
 
@@ -34,11 +32,13 @@ public class Case {
         this.fouillee = false;
     }
 
-    public Case(int planches, int metal) {
+    public Case(int planches, int metal, int drogue) {
         this.objets = new Entrepot();
         this.objets.deposerObjet(Objets.PLANCHES, planches);
         this.objets.deposerObjet(Objets.METAL, metal);
+        this.objets.deposerObjet(Objets.DROGUE, drogue);
         this.nombreZombies = 0;
+        this.nombreJoueurs = 0;
         this.fouillee = false;
     }
 
@@ -72,10 +72,10 @@ public class Case {
      * Fait apparaître un nombre de zombies aléatoire sur la case
      */
     public void popZombies() {
-        if (this.nombreZombies == 0) {
+        if (this.nombreZombies == 0) { //On ne fait apparaître des zombies que s'il n'y en a pas déjà 
             Random ra = new Random();
             int alea = ra.nextInt(10);
-            if (alea < 7) {
+            if (alea < 7) { //70% de chances de faire apparaître équiprobablement de 1 à 7 zombies, et donc les 30% restants : pas de nouveau zombie
                 this.nombreZombies = alea + 1;
             }
         }

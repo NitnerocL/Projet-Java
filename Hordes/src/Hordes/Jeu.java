@@ -224,7 +224,7 @@ public class Jeu {
                 joueur.puiserEau();
                 break;
             case 3:
-                menuVille(joueur);
+                
                 break;
             default:
                 System.out.println("Saisie invalide");
@@ -258,7 +258,7 @@ public class Jeu {
                 }
                 break;
             case 2:
-                menuVille(joueur);
+                
                 break;
             default:
                 System.out.println("Saisie invalide");
@@ -268,6 +268,8 @@ public class Jeu {
         }
     }
 
+    
+    //Refaire ça, pas normal que ce soit en double !
     private void actionConstruire(Citoyen joueur) {
         Scanner sc = new Scanner(System.in);
         int saisie;
@@ -372,7 +374,7 @@ public class Jeu {
 
                 break;
             case 3:
-                menuVille(joueur);
+                
                 break;
             default:
                 System.out.println("Saisie invalide.");
