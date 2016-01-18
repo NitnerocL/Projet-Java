@@ -45,12 +45,12 @@ public class Case {
     ////////////////////////////////////////////////////////////////////////////
     // Accesseurs
     ////////////////////////////////////////////////////////////////////////////
-    public int getNombreMetal() {
-        return this.objets.getNombreMetal();
+    public int getNombre(int objet) {
+        return this.objets.getNombre(objet);
     }
 
-    public int getNombrePlanches() {
-        return this.objets.getNombrePlanches();
+    public Entrepot getObjets() {
+        return this.objets;
     }
 
     public boolean getFouillee() {
@@ -117,7 +117,7 @@ public class Case {
 
     @Override
     public String toString() {
-        return (this.getNombreMetal() + " plaques de métal et " + this.getNombrePlanches() + " planches");
+        return this.objets.toString();
     }
 
 }//End of class

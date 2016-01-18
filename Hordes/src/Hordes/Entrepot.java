@@ -29,16 +29,8 @@ public class Entrepot {
     ////////////////////////////////////////////////////////////////////////////
     // Accesseurs
     ////////////////////////////////////////////////////////////////////////////
-    public int getNombrePlanches() {
-        return this.entrepot[Objets.PLANCHES];
-    }
-
-    public int getNombreMetal() {
-        return this.entrepot[Objets.METAL];
-    }
-
-    public int getNombreRepas() {
-        return this.entrepot[Objets.NOURRITURE];
+    public int getNombre(int objet){
+        return this.entrepot[objet];
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -78,6 +70,10 @@ public class Entrepot {
 
     @Override
     public String toString() {
-        return "Planches : " + this.entrepot[Objets.PLANCHES] + "\nPlaques de métal : " + this.entrepot[Objets.METAL] + "\nRepas : " + this.entrepot[Objets.NOURRITURE];
+        String chaine ="";
+        for(int i = 0;i<4;i++){
+            chaine += Objets.objetToString(i, true) + " : " + this.entrepot[i]+"\n";
+        }
+        return chaine;
     }
 }//End of class

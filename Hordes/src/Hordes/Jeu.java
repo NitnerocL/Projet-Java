@@ -90,7 +90,8 @@ public class Jeu {
                     break;
 
                 case 5:
-                    actionEntrepot(joueur);
+                    System.out.println("Entrepôt :");
+                    actionEntrepot(joueur, ville.getBanque());
                     break;
 
                 case 6:
@@ -154,30 +155,37 @@ public class Jeu {
     }
 
     private void actionFouiller(Citoyen joueur, Case caseJoueur) {
-        if (caseJoueur.getFouillee()) {
-            System.out.println(caseJoueur);
-            System.out.println("1. Ramasser une planche");
-            System.out.println("2. Ramasser une plaque de métal");
-            System.out.println("3. Annuler");
-            Scanner sc = new Scanner(System.in);
-            int saisie = sc.nextInt();
-            if (saisie == 1 || saisie == 2) {
-                if (caseJoueur.contient(--saisie)) {
-                    if (joueur.ramasser(saisie)) {
-                        caseJoueur.retirerObjet(saisie);
-                    }
-                } else {
-                    System.out.println("Erreur : impossible de trouver cet objet dans cette zone.");
-                }
-            } else if (saisie == 3) {
-            } else {
-                System.out.println("Saisie invalide. Reccomencez.");
-                actionFouiller(joueur, caseJoueur);
+        if (!caseJoueur.getFouillee()) {
+            if (joueur.action(1)) {
+                System.out.print("Vous fouillez la zone tout autour de vous et trouvez " + caseJoueur);
+                caseJoueur.fouiller();
             }
-        } else if (joueur.action(1)) {
+        }
 
-            System.out.print("Vous fouillez la zone tout autour de vous et trouvez " + caseJoueur);
-            caseJoueur.fouiller();
+        if (caseJoueur.getFouillee()) { //On n'utilise pas un else pour entrer quand même dans cette condition après avoir fouiller la case, mais on teste quand même le fait que la case soit fouillé au cas où le joueur n'avait pas assez de PA et donc n'avait pas fouillé la première fois.
+            System.out.println("Par terre :");
+//            System.out.println(caseJoueur);
+//            System.out.println("1. Ramasser une planche");
+//            System.out.println("2. Ramasser une plaque de métal");
+//            System.out.println("3. Annuler");
+//            Scanner sc = new Scanner(System.in);
+//            int saisie = sc.nextInt();
+//            if (saisie == 1 || saisie == 2) {
+//                if (caseJoueur.contient(--saisie)) {
+//                    if (joueur.ramasser(saisie)) {
+//                        caseJoueur.retirerObjet(saisie);
+//                    }
+//                } else {
+//                    System.out.println("Erreur : impossible de trouver cet objet dans cette zone.");
+//                }
+//            } else if (saisie == 3) {
+//            } else {
+//                System.out.println("Saisie invalide. Reccomencez.");
+//                actionFouiller(joueur, caseJoueur);
+//            }
+//        
+            actionEntrepot(joueur, caseJoueur.getObjets());
+        
         }
     }
 
@@ -185,25 +193,16 @@ public class Jeu {
         System.out.println(joueur.getSacADos());
         Scanner sc = new Scanner(System.in);
         int saisie;
-        if (joueur.getSacADos().contient(Objets.GOURDE)) {
-            System.out.println("1. Boire");
-        } else {
-            System.out.println("X Boire");
-        }
-        if (joueur.getSacADos().contient(Objets.NOURRITURE)) {
-            System.out.println("2. Manger");
-        } else {
-            System.out.println("X Manger");
-        }
-        System.out.println("3. Retour");
+        System.out.println("1. Prendre de la drogue");
+        System.out.println("2. Manger");
+        System.out.println("3. Boire");
+        System.out.println("4. Retour");
         saisie = sc.nextInt();
 
-        if (saisie == 1 && joueur.getSacADos().contient(Objets.GOURDE)) {
-            joueur.utiliserObjet(Objets.GOURDE);
-        } else if (saisie == 2 && joueur.getSacADos().contient(Objets.NOURRITURE)) {
-            joueur.utiliserObjet(Objets.NOURRITURE);
-        } else if (saisie == 3) {
-            menuVille(joueur);
+        if (saisie >0 && saisie <4){
+            joueur.utiliserObjet(saisie+1);
+        } else if (saisie == 4) {
+            
         } else {
             System.out.println("Saisie invalide.");
             actionInventaire(joueur);
@@ -275,7 +274,7 @@ public class Jeu {
         this.ville.afficherConstructions();
         System.out.println("Vous avez " + joueur.getPa() + "PA");
         System.out.println("Points de défense : " + this.ville.calculPointsDeDefense());
-        System.out.println("L'entrepôt contient " + ville.getBanque().getNombreMetal() + " plaques de métal et " + ville.getBanque().getNombrePlanches() + " planches.");
+        System.out.println("L'entrepôt contient " + ville.getBanque().getNombre(Objets.METAL) + " plaques de métal et " + ville.getBanque().getNombre(Objets.PLANCHES) + " planches.");
         System.out.println("1. Construire un mur d'enceinte");
         System.out.println("2. Installer des barbelés");
         System.out.println("3. Creuser des fosses à zombies");
@@ -291,7 +290,7 @@ public class Jeu {
             System.out.println("Combien de points d'action voulez-vous investir dans la construction de ce bâtiment ? (0 pour annuler)");
             this.ville.afficherConstructions();
             System.out.println("Points de défense : " + this.ville.calculPointsDeDefense());
-            System.out.println("L'entrepôt contient " + ville.getBanque().getNombreMetal() + " plaques de métal et " + ville.getBanque().getNombrePlanches() + " planches.");
+            System.out.println("L'entrepôt contient " + ville.getBanque().getNombre(Objets.METAL) + " plaques de métal et " + ville.getBanque().getNombre(Objets.PLANCHES) + " planches.");
             System.out.println("1. Construire un mur d'enceinte");
             System.out.println("2. Installer des barbelés");
             System.out.println("3. Creuser des fosses à zombies");
@@ -325,9 +324,8 @@ public class Jeu {
         }
     }
 
-    private void actionEntrepot(Citoyen joueur) {
-        System.out.println("Entrepôt :");
-        System.out.println(ville.getBanque());
+    private void actionEntrepot(Citoyen joueur, Entrepot entrepot) {
+        System.out.println(entrepot);
         System.out.println("\nVotre inventaire :");
         System.out.println(joueur.getSacADos());
         System.out.println("\n1. Prendre un objet dans l'entrepôt");
@@ -344,14 +342,14 @@ public class Jeu {
                 System.out.println("4. Retour");
                 saisie = sc.nextInt();
                 if (saisie > 0 && saisie < 4) {
-                    if (ville.getBanque().retirerObjet(--saisie, 1)) {
+                    if (entrepot.retirerObjet(--saisie, 1)) {
                         joueur.ramasser(saisie);
                     }
                 } else {
                     if (saisie != 4) {
                         System.out.println("Saisie invalide.");
                     }
-                    actionEntrepot(joueur);
+                    actionEntrepot(joueur, entrepot);
                 }
                 break;
             case 2:
@@ -363,13 +361,13 @@ public class Jeu {
                 saisie = sc.nextInt();
                 if (saisie > 0 && saisie < 4) {
                     if (joueur.deposer(--saisie)) {
-                        ville.getBanque().deposerObjet(saisie, 1);
+                        entrepot.deposerObjet(saisie, 1);
                     }
                 } else {
                     if (saisie != 4) {
                         System.out.println("Saisie invalide.");
                     }
-                    actionEntrepot(joueur);
+                    actionEntrepot(joueur, entrepot);
                 }
 
                 break;
@@ -378,7 +376,7 @@ public class Jeu {
                 break;
             default:
                 System.out.println("Saisie invalide.");
-                actionEntrepot(joueur);
+                actionEntrepot(joueur, entrepot);
                 break;
         }
     }

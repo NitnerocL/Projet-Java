@@ -242,7 +242,7 @@ public class Citoyen {
     public void initTour(){
         this.ajouterPA(4);
         this.dejaMange=false;
-        this.dejaBu = true;
+        this.dejaBu = false;
     }
 
 }//End of class
