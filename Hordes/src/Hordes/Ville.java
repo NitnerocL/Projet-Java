@@ -10,20 +10,22 @@ package Hordes;
  * @author Morgane
  */
 public class Ville {
-//////////////////////////////////////////////////////////////////////
-/////////// Attributs privés ////////////////////////////////////////
-////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+// Attributs privés
+////////////////////////////////////////////////////////////////////////////////
 
     private Entrepot banque = new Entrepot();
     private boolean openedDoor; // Vrai quand la porte est ouverte.
-    private Defense[] defenses = new Defense[7];
-    private int pointsDefense;
-    ///////////////////////////////////////////////////////////////////
-    //// Constructeur ////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////
+    private Defense[] defenses = new Defense[7]; //Tableau contenant les 7 défenses possibles de la ville.
+    private int pointsDefense;//nombre total de zombies auquel la ville peut résister
+    ////////////////////////////////////////////////////////////////////////////
+    // Constructeur 
+    ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Constructeur de la ville
+     * Constructeur de la ville Créer les 7 défenses comme décrites dans
+     * l'énoncés, à l'état non construites. Dépose 50 rations de nourriture dans
+     * l'entrepot Dote la ville de ses 20 points de défense de base.
      */
     public Ville() {
         defenses[0] = new Defense("Mur d'enceinte", 20, 5, 10, 20);
@@ -38,29 +40,12 @@ public class Ville {
         pointsDefense = 20;
 
     }
-/////////////////////////////////////////////////////////////
-///////////// Méthodes publiques ///////////////////////////
-///////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+// Accesseurs
+////////////////////////////////////////////////////////////////////////////////
 
     public boolean getOpenedDoor() {
         return this.openedDoor;
-    }
-
-    /**
-     * Ouvre la porte (passe le booléen à vrai).
-     *
-     * @return true ou false (ça s'est bien passé ou pas)
-     */
-    public boolean ouvrirPorte() { //Ne pas oublier dans Citoyen d'enlever le PA.
-        if (openedDoor) {
-            System.out.println("La porte est déjà ouverte !");
-            return false;
-        } else {
-            openedDoor = false;
-            System.out.println("La porte a été ouverte !");
-            this.openedDoor = true;
-            return true; // All was right.
-        }
     }
 
     public Defense[] getDefenses() {
@@ -75,6 +60,26 @@ public class Ville {
         return this.banque;
     }
 
+    ////////////////////////////////////////////////////////////////////////////
+    // Méthodes publiques
+    ////////////////////////////////////////////////////////////////////////////
+    /**
+     * Ouvre la porte (passe le booléen à vrai).
+     *
+     * @return true ou false (ça s'est bien passé ou pas)
+     */
+    public boolean ouvrirPorte() {
+        if (openedDoor) {
+            System.out.println("La porte est déjà ouverte !");
+            return false;
+        } else {
+            openedDoor = false;
+            System.out.println("La porte a été ouverte !");
+            this.openedDoor = true;
+            return true; // All was right.
+        }
+    }
+
     /**
      * Ferme la porte.
      *
@@ -86,7 +91,7 @@ public class Ville {
             return false;
         } else {
             System.out.println("La porte a été fermée");
-            this.openedDoor=false;
+            this.openedDoor = false;
             return true;
         }
 
@@ -98,7 +103,7 @@ public class Ville {
      * @return this.pointsDefense
      */
     public int calculPointsDeDefense() {
-        this.pointsDefense = 20;
+        this.pointsDefense = 20; //On ajoute aux 20 points de défense de base les points de chaque bâtiment construit
         for (int i = 0; i < 7; i++) {
             if (this.defenses[i].isBuilt()) {
                 this.pointsDefense += defenses[i].getPointsDefense();
@@ -110,12 +115,13 @@ public class Ville {
     /**
      * Construit une jolie défense dans la ville.
      *
-     * @param numCaseDef
-     * @param nbPA
-     * @return
+     * @param numCaseDef l'id de la défense à construire
+     * @param nbPA le nombre de points d'action investis dans la construction
+     * @return true si la construction a été effectué, false sinon (manque de
+     * ressource, nbPA trop grand ou défense déjà construite...)
      */
-    public boolean construireDefense(int numCaseDef, int nbPA) { //Dans Jeu, demander au joueur quel bâtiment il veut construire et enlever les PA dans le joueur.
-        if(nbPA == 0){
+    public boolean construireDefense(int numCaseDef, int nbPA) {
+        if (nbPA == 0) {
             return true;
         }
         if (!this.defenses[numCaseDef].constructionCommencee()) { //Vérifie si c'est une nouvelle construction. Si oui, on vérifie qu'il y a assez de matériel.
@@ -146,6 +152,10 @@ public class Ville {
 
     }
 
+    /**
+     * Affiche la liste des défenses de la ville ainsi que leurs
+     * caractéristiques et état, sous forme de "tableau"
+     */
     public void afficherConstructions() {
         System.out.println(String.format("%-40s", "Nom") + " | " + String.format("%-12s", "Etat") + " | " + String.format("%-7s", "Avancement") + " | " + String.format("%-3s", "Def") + " | " + String.format("%-19s", "Coût") + " | " + String.format("%-12s", "Coût"));
         for (int i = 0; i < 7; i++) {

@@ -18,15 +18,17 @@ public class Carte {
     ////////////////////////////////////////////////////////////////////////////
     // Constructeurs
     ////////////////////////////////////////////////////////////////////////////
+    /**
+     * Constructeur de Carte. Initialise chaque carte et répartit aléatoirement
+     * 1000 planches, 500 plaques de métal et 100 drogues.
+     */
     public Carte() {
         for (int i = 0; i < 25; i++) {
             for (int j = 0; j < 25; j++) {
                 this.tableau[i][j] = new Case();
             }
         }
-
         Random ra = new Random();
-        //--Mettre tout ça dans une grande boucle --//
         int[] nbObjets = {1000, 500, 100};//L'indice représente l'objet en question --> 1000 planches, 500 métal, 100 drogues.
 
         for (int idObjet = 0; idObjet < 3; idObjet++) {
@@ -41,38 +43,6 @@ public class Carte {
             }
         }
 
-//        //Répartition des 1000 planches sur la carte
-//        for (int i = 0; i < 1000; i++) {
-//            int x = 13;
-//            int y = 13;
-//            while(x == 13 && y == 13){
-//                x = ra.nextInt(25);
-//                y = ra.nextInt(25);
-//            }
-//            this.tableau[x][y].ajouterObjet(Objets.PLANCHES);
-//        }
-//        
-//        //Répartition des 500 plaques de métal sur la carte
-//        for (int i = 0; i < 500; i++) {
-//            int x = 13;
-//            int y = 13;
-//            while(x == 13 && y == 13){
-//                x = ra.nextInt(25);
-//                y = ra.nextInt(25);
-//            }
-//            this.tableau[x][y].ajouterObjet(Objets.METAL);
-//        }
-//        
-//        //Répartition des 100 boissons énergisantes sur la carte
-//        for (int i = 0; i < 100; i++) {
-//            int x = 13;
-//            int y = 13;
-//            while(x == 13 && y == 13){
-//                x = ra.nextInt(25);
-//                y = ra.nextInt(25);
-//            }
-//            this.tableau[x][y].ajouterObjet(Objets.DROGUE);
-//        }
     }
 
     ////////////////////////////////////////////////////////////////////////////
