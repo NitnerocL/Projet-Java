@@ -115,6 +115,9 @@ public class Ville {
      * @return
      */
     public boolean construireDefense(int numCaseDef, int nbPA) { //Dans Jeu, demander au joueur quel bâtiment il veut construire et enlever les PA dans le joueur.
+        if(nbPA == 0){
+            return true;
+        }
         if (!this.defenses[numCaseDef].constructionCommencee()) { //Vérifie si c'est une nouvelle construction. Si oui, on vérifie qu'il y a assez de matériel.
             if (this.banque.getNombre(Objets.PLANCHES) < this.defenses[numCaseDef].getCoutPlanches()) {
                 System.out.println("Il n'y a pas assez de planches !");

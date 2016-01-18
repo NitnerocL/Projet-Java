@@ -15,13 +15,13 @@ public class Entrepot {
     ////////////////////////////////////////////////////////////////////////////
     // Attributs privés
     ////////////////////////////////////////////////////////////////////////////
-    private int[] entrepot = new int[4];
+    private int[] entrepot = new int[5];
 
     ////////////////////////////////////////////////////////////////////////////
     // Constructeurs
     ////////////////////////////////////////////////////////////////////////////
     public Entrepot() {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             entrepot[i] = 0;
         }
     }
@@ -71,7 +71,7 @@ public class Entrepot {
     @Override
     public String toString() {
         String chaine ="";
-        for(int i = 0;i<4;i++){
+        for(int i = 0;i<5;i++){
             chaine += Objets.objetToString(i, true) + " : " + this.entrepot[i]+"\n";
         }
         return chaine;

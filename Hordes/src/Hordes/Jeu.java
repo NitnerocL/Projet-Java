@@ -42,9 +42,10 @@ public class Jeu {
                 String reponse = sc.nextLine();
                 if (reponse.equals("N")) {
                     if (aliveJoueurs.size() == 1) {
-                        System.out.println("Ce n'est pas très rigolo de jouer tout seul !");
+                        System.out.println("Ce n'est pas très rigolo de jouer tout seul ! Il faut au minimum 2 joueurs !");
+                    } else {
+                        qqnVeutJouer = false;
                     }
-                    qqnVeutJouer = false;
                 }
             }
         }
@@ -104,7 +105,7 @@ public class Jeu {
                 default:
                     System.out.println("Saisie invalide.");
                     menuVille(joueur);
-                    break;
+                    return true;
             }
         }
         return false;
@@ -185,7 +186,7 @@ public class Jeu {
 //            }
 //        
             actionEntrepot(joueur, caseJoueur.getObjets());
-        
+
         }
     }
 
@@ -199,10 +200,10 @@ public class Jeu {
         System.out.println("4. Retour");
         saisie = sc.nextInt();
 
-        if (saisie >0 && saisie <4){
-            joueur.utiliserObjet(saisie+1);
+        if (saisie > 0 && saisie < 4) {
+            joueur.utiliserObjet(saisie + 1);
         } else if (saisie == 4) {
-            
+
         } else {
             System.out.println("Saisie invalide.");
             actionInventaire(joueur);
@@ -224,7 +225,7 @@ public class Jeu {
                 joueur.puiserEau();
                 break;
             case 3:
-                
+
                 break;
             default:
                 System.out.println("Saisie invalide");
@@ -258,7 +259,7 @@ public class Jeu {
                 }
                 break;
             case 2:
-                
+
                 break;
             default:
                 System.out.println("Saisie invalide");
@@ -268,8 +269,6 @@ public class Jeu {
         }
     }
 
-    
-    //Refaire ça, pas normal que ce soit en double !
     private void actionConstruire(Citoyen joueur) {
         Scanner sc = new Scanner(System.in);
         int saisie;
@@ -288,41 +287,29 @@ public class Jeu {
         saisie = sc.nextInt();
         if (saisie > 0 && saisie < 8) {
             int defChoisie = saisie;
-            System.out.println(ville.getDefenses()[saisie - 1]);
-            System.out.println("Combien de points d'action voulez-vous investir dans la construction de ce bâtiment ? (0 pour annuler)");
-            this.ville.afficherConstructions();
-            System.out.println("Points de défense : " + this.ville.calculPointsDeDefense());
-            System.out.println("L'entrepôt contient " + ville.getBanque().getNombre(Objets.METAL) + " plaques de métal et " + ville.getBanque().getNombre(Objets.PLANCHES) + " planches.");
-            System.out.println("1. Construire un mur d'enceinte");
-            System.out.println("2. Installer des barbelés");
-            System.out.println("3. Creuser des fosses à zombies");
-            System.out.println("4. Disposer des mines autour de la ville");
-            System.out.println("5. Installer des portes blindées");
-            System.out.println("6. Eriger des miradors");
-            System.out.println("7. Construire des abris anti-atomique");
-            System.out.println("8. Retour");
-            saisie = sc.nextInt();
-            if (saisie > 0 && saisie < 8) {
-                saisie = sc.nextInt();
-                if (saisie < 0) {
-                    System.out.println("Saisie invalide.");
-                    actionConstruire(joueur);
-                } else if (saisie == 0) {
-                } else if (joueur.getPa() >= saisie) {
-                    if (ville.construireDefense(defChoisie, saisie)) {
-                        joueur.action(saisie);
-                    }
-                } else {
-                    System.out.println("Vous n'avez pas assez de PA.");
-                }
-                menuVille(joueur);
-            } else if (saisie == 8) {
-                menuVille(joueur);
-            } else {
-                System.out.println("Saisie invalide");
+            Defense def = this.ville.getDefenses()[saisie];
+            System.out.println(def);
+            if (def.isBuilt()) {
+                System.out.println("Cette défense est déjà construite.");
                 actionConstruire(joueur);
+            } else {
+                boolean erreur = true;
+                while (erreur) {
+                    System.out.println("Combien de points d'action voulez-vous investir ? (0 pour annuler)");
+                    saisie = sc.nextInt();
+                    if (saisie >= 0 && joueur.getPa() <= saisie) {
+                        if (ville.construireDefense(defChoisie, saisie)) {
+                            erreur = !joueur.action(saisie);
+                        }
+                    }else{
+                        System.out.println("Vous n'avez pas assez de PA !");
+                    }
+                }
             }
 
+        } else if (saisie != 8) {
+            System.out.println("Saisie invalide. Recommencez.");
+            actionConstruire(joueur);
         }
     }
 
@@ -330,8 +317,8 @@ public class Jeu {
         System.out.println(entrepot);
         System.out.println("\nVotre inventaire :");
         System.out.println(joueur.getSacADos());
-        System.out.println("\n1. Prendre un objet dans l'entrepôt");
-        System.out.println("2. Déposer un objet dans l'entrepôt");
+        System.out.println("\n1. Prendre un objet");
+        System.out.println("2. Déposer un objet");
         System.out.println("3. Retour");
         Scanner sc = new Scanner(System.in);
         int saisie = sc.nextInt();
@@ -374,7 +361,7 @@ public class Jeu {
 
                 break;
             case 3:
-                
+
                 break;
             default:
                 System.out.println("Saisie invalide.");

@@ -32,16 +32,6 @@ public class Case {
         this.fouillee = false;
     }
 
-    public Case(int planches, int metal, int drogue) {
-        this.objets = new Entrepot();
-        this.objets.deposerObjet(Objets.PLANCHES, planches);
-        this.objets.deposerObjet(Objets.METAL, metal);
-        this.objets.deposerObjet(Objets.DROGUE, drogue);
-        this.nombreZombies = 0;
-        this.nombreJoueurs = 0;
-        this.fouillee = false;
-    }
-
     ////////////////////////////////////////////////////////////////////////////
     // Accesseurs
     ////////////////////////////////////////////////////////////////////////////
