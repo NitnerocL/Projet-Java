@@ -110,6 +110,11 @@ public class Jeu {
     }
 
     private boolean menuExterieur(Citoyen joueur) {
+        if (carte.getCase(joueur.getPosition()).getFouillee()) {
+            System.out.println(carte.getCase(joueur.getPosition()));
+        } else {
+            System.out.println("Cette zone n'a pas encore été fouillée.");
+        }
         Scanner sc = new Scanner(System.in);
         System.out.println("1. Inventaire");
         System.out.println("2. Fouiller la zone");
@@ -122,17 +127,14 @@ public class Jeu {
                 actionInventaire(joueur);
                 break;
             case 2: //Rajouter le fait de pouvoir voir et ramasser les items !
-                if (joueur.action(1)) {
-                    int[] pos = joueur.getPosition();
-                    carte.getCarte()[pos[0]][pos[1]].fouiller();
-                }
+                actionFouiller(joueur,carte.getCase(joueur.getPosition()));
                 break;
             case 3:
                 if (carte.getCase(joueur.getPosition()).resteZombies()) {
                     if (joueur.combattre()) {
                         carte.getCase(joueur.getPosition()).combat();
                     }
-                }else{
+                } else {
                     System.out.println("Il n'y a pas de zombies sur cette case !");
                 }
                 break;
@@ -148,6 +150,33 @@ public class Jeu {
 
         }
         return false;
+    }
+
+    private void actionFouiller(Citoyen joueur, Case caseJoueur) {
+        if (caseJoueur.getFouillee()) {
+            System.out.println(caseJoueur);
+            System.out.println("1. Ramasser une planche");
+            System.out.println("2. Ramasser une plaque de métal");
+            System.out.println("3. Annuler");
+            Scanner sc = new Scanner(System.in);
+            int saisie = sc.nextInt();
+            if (saisie == 1 || saisie == 2) {
+                if (caseJoueur.contient(--saisie)) {
+                    if (joueur.ramasser(saisie)) {
+                        caseJoueur.retirerObjet(saisie);
+                    }
+                } else {
+                    System.out.println("Erreur : impossible de trouver cet objet dans cette zone.");
+                }
+            } else if(saisie == 3){}else {
+                System.out.println("Saisie invalide. Reccomencez.");
+                actionFouiller(joueur, caseJoueur);
+            }
+        } else if (joueur.action(1)) {
+
+            System.out.print("Vous fouillez la zone tout autour de vous et trouvez " + caseJoueur);
+            caseJoueur.fouiller();
+        }
     }
 
     private void actionInventaire(Citoyen joueur) {
@@ -313,7 +342,7 @@ public class Jeu {
                 System.out.println("4. Retour");
                 saisie = sc.nextInt();
                 if (saisie > 0 && saisie < 4) {
-                    if (ville.getBanque().retirerObjet(saisie, 1)) {
+                    if (ville.getBanque().retirerObjet(--saisie, 1)) {
                         joueur.ramasser(saisie);
                     }
                 } else {
@@ -331,7 +360,7 @@ public class Jeu {
                 System.out.println("4. Retour");
                 saisie = sc.nextInt();
                 if (saisie > 0 && saisie < 4) {
-                    if (joueur.deposer(saisie)) {
+                    if (joueur.deposer(--saisie)) {
                         ville.getBanque().deposerObjet(saisie, 1);
                     }
                 } else {
@@ -441,7 +470,7 @@ public class Jeu {
             System.out.println(joueur.getPseudo());
             System.out.println("Jour " + this.jour + ", " + this.heure + "h.");
             System.out.println("Il vous reste " + joueur.getPa() + " PA.");
-            System.out.println("Vous avez "+joueur.getPv() + " PV.");
+            System.out.println("Vous avez " + joueur.getPv() + " PV.");
             System.out.println("Que voulez vous faire ?");
             if (joueur.estdDansVille()) {
                 finTour = menuVille(joueur);

@@ -38,7 +38,7 @@ public class Carte {
                 x = ra.nextInt(25);
                 y = ra.nextInt(25);
             }
-            this.tableau[x][y].ajouterPlanche();
+            this.tableau[x][y].ajouterObjet(Objets.PLANCHES);
         }
         
         //Répartition des 500 plaques de métal sur la carte
@@ -49,7 +49,7 @@ public class Carte {
                 x = ra.nextInt(25);
                 y = ra.nextInt(25);
             }
-            this.tableau[x][y].ajouterMetal();
+            this.tableau[x][y].ajouterObjet(Objets.METAL);
         }
     }
     ////////////////////////////////////////////////////////////////////////////

@@ -49,7 +49,7 @@ public class Inventaire {
     public String toString() {
         String chaine = new String();
         for (int objet : this.objets) {
-            chaine += Objets.objetToString(objet, false) +" | ";
+            chaine += Objets.objetToString(objet, false) + " | ";
         }
         return chaine;
     }
@@ -63,7 +63,8 @@ public class Inventaire {
      */
     public boolean retirer(int objet) {
         if (this.contient(objet)) {
-            this.objets.remove(objet);
+            this.objets.remove((Integer) objet); //on cast l'id de l'objet en Integer pour préciser qu'on veut utiliser remove(Object) et non pas remove(int), c'est-à-dire qu'on passe en paramètre l'objet à supprimer et non pas son index dans la liste.
+
             return true;
         } else {
             System.out.println("Vous ne possédez pas de " + Objets.objetToString(objet, false) + ".");

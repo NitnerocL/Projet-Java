@@ -17,25 +17,27 @@ public class Case {
     // Attributs privés
     ////////////////////////////////////////////////////////////////////////////
     private int nombreZombies;
-    private int nombrePlanches;
-    private int nombreMetal;
+    private Entrepot objets;
+    //private int nombrePlanches;
+    //private int nombreMetal;
     private int nombreJoueurs;
     private boolean fouillee;
 
     ////////////////////////////////////////////////////////////////////////////
     // Constructeurs
     ////////////////////////////////////////////////////////////////////////////
-    public Case(){
-        this.nombreMetal = 0;
-        this.nombrePlanches = 0;
+    public Case() {
+
+        this.objets = new Entrepot();
         this.nombreZombies = 0;
         this.nombreJoueurs = 0;
         this.fouillee = false;
     }
-    
+
     public Case(int planches, int metal) {
-        this.nombreMetal = metal;
-        this.nombrePlanches = planches;
+        this.objets = new Entrepot();
+        this.objets.deposerObjet(Objets.PLANCHES, planches);
+        this.objets.deposerObjet(Objets.METAL, metal);
         this.nombreZombies = 0;
         this.fouillee = false;
     }
@@ -43,24 +45,23 @@ public class Case {
     ////////////////////////////////////////////////////////////////////////////
     // Accesseurs
     ////////////////////////////////////////////////////////////////////////////
-
     public int getNombreMetal() {
-        return this.nombreMetal;
+        return this.objets.getNombreMetal();
     }
 
     public int getNombrePlanches() {
-        return this.nombrePlanches;
+        return this.objets.getNombrePlanches();
     }
 
     public boolean getFouillee() {
         return this.fouillee;
     }
-    
-    public int getNombreZombies(){
+
+    public int getNombreZombies() {
         return this.nombreZombies;
     }
-    
-    public int getNombreJoueurs(){
+
+    public int getNombreJoueurs() {
         return this.nombreJoueurs;
     }
 
@@ -79,60 +80,44 @@ public class Case {
             }
         }
     }
-    
-    public boolean resteZombies(){
+
+    public boolean resteZombies() {
         return this.nombreZombies > 0;
     }
 
-    public void ajouterPlanche() {
-        this.nombrePlanches += 1;
+    public void ajouterObjet(int objet) {
+        this.objets.deposerObjet(objet, 1);
     }
 
-    public void ajouterMetal() {
-        this.nombreMetal += 1;
-    }
-
-    public boolean retirerPlanches(int n) {
-        if (this.nombrePlanches >= n) {
-            this.nombrePlanches -= n;
-            return true;
-        } else {
-            System.out.println("Il n'y a pas assez de planches");
-            return false;
-        }
-    }
-
-    public boolean retirerMetal(int n) {
-        if (this.nombreMetal >= n) {
-            this.nombreMetal -= n;
-            return true;
-        } else {
-            System.out.println("Il n'y a pas assez de plaques de métal.");
-            return false;
-        }
+    public boolean retirerObjet(int objet) {
+        return this.objets.retirerObjet(objet, 1);
     }
 
     public void fouiller() {
         this.fouillee = true;
     }
-    
-    public void combat(){
-        if(this.nombreZombies >0){
+
+    public void combat() {
+        if (this.nombreZombies > 0) {
             this.nombreZombies--;
         }
     }
-    
-    public void joueurEntre(){
+
+    public void joueurEntre() {
         this.nombreJoueurs++;
     }
-    
-    public void joueurSort(){
+
+    public void joueurSort() {
         this.nombreJoueurs--;
+    }
+
+    public boolean contient(int objet) {
+        return this.objets.contient(objet);
     }
 
     @Override
     public String toString() {
-        return (this.nombreMetal + " plaques de métal et " + this.nombrePlanches + " planches");
+        return (this.getNombreMetal() + " plaques de métal et " + this.getNombrePlanches() + " planches");
     }
 
 }//End of class
