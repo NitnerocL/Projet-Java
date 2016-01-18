@@ -94,7 +94,7 @@ public class Citoyen {
      *
      * @return true si le joueur est dans la ville, false sinon
      */
-    public boolean estdDansVille() {
+    public boolean estDansVille() {
         return this.position[0] == 13 && this.position[1] == 13;
     }
 
@@ -146,7 +146,7 @@ public class Citoyen {
     
     
     public boolean puiserEau() {
-        if (this.estdDansVille()) {
+        if (this.estDansVille()) {
             return this.sacADos.ajouter(Objets.GOURDE);
 
         } else {
@@ -156,7 +156,7 @@ public class Citoyen {
     }
     
     public boolean boireVille(){
-        if (this.estdDansVille()){
+        if (this.estDansVille()){
             return this.boire();
         }else{
             System.out.println("Vous n'êtes pas dans la ville.");
@@ -212,5 +212,6 @@ public class Citoyen {
             return false;
         }
     }
+
 
 }//End of class

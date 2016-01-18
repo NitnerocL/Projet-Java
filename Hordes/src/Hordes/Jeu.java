@@ -126,8 +126,8 @@ public class Jeu {
             case 1:
                 actionInventaire(joueur);
                 break;
-            case 2: //Rajouter le fait de pouvoir voir et ramasser les items !
-                actionFouiller(joueur,carte.getCase(joueur.getPosition()));
+            case 2:
+                actionFouiller(joueur, carte.getCase(joueur.getPosition()));
                 break;
             case 3:
                 if (carte.getCase(joueur.getPosition()).resteZombies()) {
@@ -168,7 +168,8 @@ public class Jeu {
                 } else {
                     System.out.println("Erreur : impossible de trouver cet objet dans cette zone.");
                 }
-            } else if(saisie == 3){}else {
+            } else if (saisie == 3) {
+            } else {
                 System.out.println("Saisie invalide. Reccomencez.");
                 actionFouiller(joueur, caseJoueur);
             }
@@ -383,7 +384,7 @@ public class Jeu {
 
     private void actionExplorer(Citoyen joueur) {
         Scanner sc = new Scanner(System.in);
-        if ((ville.getOpenedDoor()) || !joueur.estdDansVille()) { //Si le joueur n'est pas dans la ville, ou qu'il est dans la ville et la porte est ouverte
+        if ((ville.getOpenedDoor()) || !joueur.estDansVille()) { //Si le joueur n'est pas dans la ville, ou qu'il est dans la ville et la porte est ouverte
             carte.afficherCarteJoueur(joueur.getPosition());
             System.out.println("1. Gauche");
             System.out.println("2. Haut");
@@ -397,12 +398,12 @@ public class Jeu {
                 } else {
                     carte.getCase(joueur.getPosition()).joueurSort();
                     joueur.seDeplacer(--saisie);
-                    if (joueur.estdDansVille() && !ville.getOpenedDoor()) { //Si le joueur essaie de rentrer en ville mais que la porte est fermée
+                    if (joueur.estDansVille() && !ville.getOpenedDoor()) { //Si le joueur essaie de rentrer en ville mais que la porte est fermée
                         joueur.ajouterPA(1);
                         joueur.seDeplacer((saisie + 2) % 4); //On effectue alors le déplacement inverse
                         joueur.ajouterPA(1);
                         System.out.println("Vous ne pouvez pas entrer dans la ville : la porte est fermée !");
-                    } else if (!joueur.estdDansVille()) {
+                    } else if (!joueur.estDansVille()) {
                         carte.getCase(joueur.getPosition()).joueurEntre();
                         if (carte.getCase(joueur.getPosition()).getNombreJoueurs() == 1) {
                             carte.getCase(joueur.getPosition()).popZombies();
@@ -428,11 +429,24 @@ public class Jeu {
 
     private int jourSuivant() {
         int mortsExterieur = 0;
-        for (Citoyen citoyen : aliveJoueurs) {
-            if (!citoyen.estdDansVille()) {
-                System.out.println(citoyen.getPseudo() + " était en dehors de la ville et a été dévoré par les zombies.");
-                tuer(citoyen);
-                mortsExterieur++;
+//        for (Citoyen citoyen : aliveJoueurs) {
+//            if (!citoyen.estdDansVille()) {
+//                System.out.println(citoyen.getPseudo() + " était en dehors de la ville et a été dévoré par les zombies.");
+//                tuer(citoyen);
+//                mortsExterieur++;
+//            }
+//        }
+        {
+            int i = 0;
+            while (i < aliveJoueurs.size()) {
+                Citoyen citoyen = aliveJoueurs.get(i);
+                if (!citoyen.estDansVille()) {
+                    System.out.println(citoyen.getPseudo() + " était en dehors de la ville et a été dévoré par les zombies.");
+                    tuer(citoyen);
+                    mortsExterieur++;
+                } else {
+                    i++;
+                }
             }
         }
         Random ra = new Random();
@@ -472,7 +486,7 @@ public class Jeu {
             System.out.println("Il vous reste " + joueur.getPa() + " PA.");
             System.out.println("Vous avez " + joueur.getPv() + " PV.");
             System.out.println("Que voulez vous faire ?");
-            if (joueur.estdDansVille()) {
+            if (joueur.estDansVille()) {
                 finTour = menuVille(joueur);
             } else {
                 finTour = menuExterieur(joueur);
