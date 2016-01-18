@@ -6,7 +6,7 @@
 package Hordes;
 
 /**
- *
+ * 
  * @author Corentin
  */
 public class Defense {
@@ -14,11 +14,11 @@ public class Defense {
     ////////////////////////////////////////////////////////////////////////////
     // Attributs privés
     ////////////////////////////////////////////////////////////////////////////
-    private int coutPlanches;
-    private int coutMetal;
-    private int coutPA;
-    private int avancement;
-    private int pointsDefense;
+    private int coutPlanches; //cout en planches pour construire la défense
+    private int coutMetal; //idem en plaques de métal
+    private int coutPA; //nombre de PA nécessaire pour finir la défesnse.
+    private int avancement; //nombre de PA déjà investis dans la construction
+    private int pointsDefense; //Points de défense apportés par la défense une fois construite (nombre de zombies supplémentaire auquel on peut résister.)
     private String nom;
 
     ////////////////////////////////////////////////////////////////////////////

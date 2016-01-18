@@ -11,6 +11,7 @@ package Hordes;
  */
 public class Objets {
 
+    //Constantes permettant de retrouver pour chaque objet sa représentation numérique utilisée. Elles améliorent la lisibilité du code. 
     public static final int PLANCHES = 0;
     public static final int METAL = 1;
     public static final int DROGUE = 2;
@@ -26,7 +27,7 @@ public class Objets {
      * @return le nom de l'objet sous forme de chaine
      */
     public static String objetToString(int n, boolean pluriel) {
-        String[][] objets = {{"planche", "planches"}, {"plaque de métal", "plaques de métal"},{"boisson énergisante","boissons énergisantes"}, {"ration de nourriture", "rations de nourriture"}, {"gourde", "gourdes"}};
+        String[][] objets = {{"planche", "planches"}, {"plaque de métal", "plaques de métal"}, {"boisson énergisante", "boissons énergisantes"}, {"ration de nourriture", "rations de nourriture"}, {"gourde", "gourdes"}};
         if (pluriel) {
             return objets[n][1];
         } else {

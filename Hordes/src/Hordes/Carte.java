@@ -23,7 +23,7 @@ public class Carte {
      * 1000 planches, 500 plaques de métal et 100 drogues.
      */
     public Carte() {
-        for (int i = 0; i < 25; i++) {//On
+        for (int i = 0; i < 25; i++) {//On commence par initialiser chaque case
             for (int j = 0; j < 25; j++) {
                 this.tableau[i][j] = new Case();
             }
@@ -31,12 +31,12 @@ public class Carte {
         Random ra = new Random();
         int[] nbObjets = {1000, 500, 100};//L'indice représente l'objet en question --> 1000 planches, 500 métal, 100 drogues.
 
-        for (int idObjet = 0; idObjet < 3; idObjet++) {
-            for (int i = 0; i < nbObjets[idObjet]; i++) {
+        for (int idObjet = 0; idObjet < 3; idObjet++) { //On répartit aléatoirement les planches, puis le métal, puis les drogues.
+            for (int i = 0; i < nbObjets[idObjet]; i++) { //Tant qu'il reste un objet à ajouter, on génère aléatoirement un couple de coordonnées (différent de la ville) et on ajoute l'objet. Un même couple peut être tiré plusieurs fois.
                 int x = 13;
                 int y = 13;
                 while (x == 13 && y == 13) {
-                    x = ra.nextInt(25);
+                    x = ra.nextInt(25); 
                     y = ra.nextInt(25);
                 }
                 this.tableau[x][y].ajouterObjet(idObjet);
@@ -55,7 +55,15 @@ public class Carte {
     public Case getCase(int[] position) {
         return this.tableau[position[0]][position[1]];
     }
-
+    
+    ////////////////////////////////////////////////////////////////////////////
+    // Méthodes publiques
+    ////////////////////////////////////////////////////////////////////////////
+    
+    /**
+     * Permet d'afficher la carte avec une marque à l'emplacement du joueur.
+     * @param pos 
+     */
     public static void afficherCarteJoueur(int[] pos) {
         for (int i = 0; i < 25; i++) {
             String ligne = "|";
@@ -70,6 +78,6 @@ public class Carte {
             }
             System.out.println(ligne);
         }
-        System.out.println("\nV : ville\nX : joueur");
+        System.out.println("\nV : ville\nX : joueur");//légende
     }
 }//End of class

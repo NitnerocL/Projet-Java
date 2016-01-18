@@ -15,7 +15,7 @@ public class Entrepot {
     ////////////////////////////////////////////////////////////////////////////
     // Attributs privés
     ////////////////////////////////////////////////////////////////////////////
-    private int[] entrepot = new int[5];
+    private int[] entrepot = new int[5]; //Chaque case représente le nombre d'objet de même id que l'indice de la case.
 
     ////////////////////////////////////////////////////////////////////////////
     // Constructeurs
@@ -29,7 +29,7 @@ public class Entrepot {
     ////////////////////////////////////////////////////////////////////////////
     // Accesseurs
     ////////////////////////////////////////////////////////////////////////////
-    public int getNombre(int objet){
+    public int getNombre(int objet) {
         return this.entrepot[objet];
     }
 
@@ -46,6 +46,12 @@ public class Entrepot {
         this.entrepot[idObjet] += quantite;
     }
 
+    /**
+     * Détermine si un objet est présent dans l'entrepôt ou non.
+     *
+     * @param idObjet l'id de l'objet à tester
+     * @return true s'il est présent, false sinon
+     */
     public boolean contient(int idObjet) {
         return this.entrepot[idObjet] > 0;
     }
@@ -70,9 +76,9 @@ public class Entrepot {
 
     @Override
     public String toString() {
-        String chaine ="";
-        for(int i = 0;i<5;i++){
-            chaine += Objets.objetToString(i, true) + " : " + this.entrepot[i]+"\n";
+        String chaine = "";
+        for (int i = 0; i < 5; i++) {
+            chaine += Objets.objetToString(i, true) + " : " + this.entrepot[i] + "\n";
         }
         return chaine;
     }

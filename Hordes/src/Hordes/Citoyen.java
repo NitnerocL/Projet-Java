@@ -73,8 +73,8 @@ public class Citoyen {
     public int getTempsSansDrogue() {
         return this.tempsSansDrogue;
     }
-    
-    public void decrementDrogue(){
+
+    public void decrementDrogue() {
         this.tempsSansDrogue--;
     }
 
@@ -82,20 +82,23 @@ public class Citoyen {
         return this.sacADos;
     }
 
-    public void ajouterPA(int n) {
-        this.pa += n;
-        if (this.pa > 10) {
-            this.pa = 10;
-        }
+    public void setDejaMange(boolean b) {
+        this.dejaMange = b;
     }
-    
-    public void blesser(int n){
-        this.pv-=n;
+
+    public void setDejaBu(boolean b) {
+        this.dejaBu = b;
     }
 
     ////////////////////////////////////////////////////////////////////////////
     // Méthodes privées
     ////////////////////////////////////////////////////////////////////////////
+    /**
+     * Représente l'action de boire pour le joueur S'il n'a pas déjà bu, le
+     * fait, c'est-à-dire augmente ses PA et indique qu'il a bu.
+     *
+     * @return true si le joueur a pu boire, false sinon.
+     */
     private boolean boire() {
         if (!this.dejaBu) {
             this.ajouterPA(6);
@@ -110,6 +113,27 @@ public class Citoyen {
     ////////////////////////////////////////////////////////////////////////////
     // Méthodes publiques
     ////////////////////////////////////////////////////////////////////////////
+    /**
+     * Permet d'ajouter n PA au joueur
+     *
+     * @param n le nombre de PA à ajouter
+     */
+    public void ajouterPA(int n) {
+        this.pa += n;
+        if (this.pa > 10) {
+            this.pa = 10;
+        }
+    }
+
+    /**
+     * Permet de retirer n PV au joueur
+     *
+     * @param n
+     */
+    public void blesser(int n) {
+        this.pv -= n;
+    }
+
     /**
      * Indique si le joueur se trouve ou non dans la ville
      *
@@ -151,6 +175,13 @@ public class Citoyen {
         }
     }
 
+    /**
+     * Simule un combat contre un zombie Teste que le joueur a assez de PA, et
+     * le cas échéant, lui retire 10PV avec 10% de chances.
+     *
+     * @return true si le combat était possible, false si le joueur n'avait pas
+     * assez de PA
+     */
     public boolean combattre() {
         if (this.pa > 0) {
             this.pa--;
@@ -165,6 +196,11 @@ public class Citoyen {
         }
     }
 
+    /**
+     * Permet au joueur de prendre de l'eau au puits de la ville
+     *
+     * @return true si tout s'est bien passé, false sinon.
+     */
     public boolean puiserEau() {
         if (this.estDansVille()) {
             return this.sacADos.ajouter(Objets.GOURDE);
@@ -175,6 +211,11 @@ public class Citoyen {
         }
     }
 
+    /**
+     * Permet au joueur de boire de l'eau directement au puits.
+     *
+     * @return true si tout s'est bien passé, false sinon
+     */
     public boolean boireVille() {
         if (this.estDansVille()) {
             return this.boire();
@@ -184,8 +225,16 @@ public class Citoyen {
         }
     }
 
+    /**
+     * Permet au joueur d'utiliser un objet consommable présent dans son
+     * inventaire. Teste que l'objet est bien présent dans l'inventaire et le
+     * cas échéant, l'utilise.
+     *
+     * @param objet id de lobjet à utiliser.
+     * @return true si tout s'est bien passé, false sinon.
+     */
     public boolean utiliserObjet(int objet) {
-        if (objet >= 0 && objet < 2) {
+        if (objet >= 0 && objet < 2) { //S'il s'agiit d'un matériau de construction
             System.out.println("Vous ne pouvez pas utiliser cet objet");
             return false;
         } else if (objet == Objets.NOURRITURE) {
@@ -221,14 +270,33 @@ public class Citoyen {
         return false;
     }
 
+    /**
+     * Permet d'ajouter un objet à l'inventaire du joueur.
+     *
+     * @param objet id de l'objet à ajouter
+     * @return true si l'ajout a été effectué, false sinon
+     */
     public boolean ramasser(int objet) {
         return this.sacADos.ajouter(objet);
     }
 
+    /**
+     * Permet de retirer un objet de l'inventaire du joueur
+     *
+     * @param objet id de l'objet à ajouter
+     * @return true si tout s'est bien passé, false sinon
+     */
     public boolean deposer(int objet) {
         return this.sacADos.retirer(objet);
     }
 
+    /**
+     * Permet de supprirmer n points d'actions au joueur
+     *
+     * @param n nombre de points d'action à retirer
+     * @return true si la suppression a été possible, false si le joueur n'a pas
+     * assez de PA.
+     */
     public boolean action(int n) {
         if (this.pa >= n) {
             this.pa -= n;
@@ -237,12 +305,6 @@ public class Citoyen {
             System.out.println("Vous n'avez pas assez de PA.");
             return false;
         }
-    }
-    
-    public void initTour(){
-        this.ajouterPA(4);
-        this.dejaMange=false;
-        this.dejaBu = false;
     }
 
 }//End of class

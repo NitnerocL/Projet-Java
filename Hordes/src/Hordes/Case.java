@@ -17,7 +17,7 @@ public class Case {
     // Attributs privés
     ////////////////////////////////////////////////////////////////////////////
     private int nombreZombies;
-    private Entrepot objets;
+    private Entrepot objets; //Objets présents sur la case
     private int nombreJoueurs;
     private boolean fouillee;
 
@@ -59,7 +59,8 @@ public class Case {
     // Méthodes publiques
     ////////////////////////////////////////////////////////////////////////////
     /**
-     * Fait apparaître un nombre de zombies aléatoire sur la case
+     * Fait apparaître un nombre de zombies aléatoire sur la case, s'il n'y en a
+     * pas déjà
      */
     public void popZombies() {
         if (this.nombreZombies == 0) { //On ne fait apparaître des zombies que s'il n'y en a pas déjà 
@@ -71,36 +72,72 @@ public class Case {
         }
     }
 
+    /**
+     * Indique s'il y a ou non des zombies sur la case
+     *
+     * @return true s'il y a des zombies sur la case, false sinon
+     */
     public boolean resteZombies() {
         return this.nombreZombies > 0;
     }
 
+    /**
+     * Permet de déposer un objet dans l'Entrepot de la case
+     *
+     * @param objet l'id de l'objet à ajouter
+     */
     public void ajouterObjet(int objet) {
         this.objets.deposerObjet(objet, 1);
     }
 
+    /**
+     * Permet de ramasser un objet présent dans la case. Le retire de l'entrepôt
+     * de la case.
+     *
+     * @param objet l'id de l'objet à retirer.
+     * @return true si l'objet était présent, false s'il était absent
+     */
     public boolean retirerObjet(int objet) {
         return this.objets.retirerObjet(objet, 1);
     }
 
+    /**
+     * Permet de fouiller la case.
+     */
     public void fouiller() {
         this.fouillee = true;
     }
 
+    /**
+     * Effectue un combat contre un zombie : si des zombies sont sur la case, en
+     * supprime un.
+     */
     public void combat() {
         if (this.nombreZombies > 0) {
             this.nombreZombies--;
         }
     }
 
+    /**
+     * Incrémente le nombre de joueurs présents sur la case.
+     */
     public void joueurEntre() {
         this.nombreJoueurs++;
     }
 
+    /**
+     * Décrémente le nombre de joueurs sur la case.
+     */
     public void joueurSort() {
         this.nombreJoueurs--;
     }
 
+    /**
+     * Détermine si un objet est présent ou non sur la case.
+     *
+     * @param objet l'id de l'objet à tester
+     * @return true si l'objet est présent, false sinon.
+     */
     public boolean contient(int objet) {
         return this.objets.contient(objet);
     }
