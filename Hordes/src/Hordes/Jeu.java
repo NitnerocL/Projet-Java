@@ -470,6 +470,28 @@ public class Jeu {
         }
         return true;
     }
+    
+    private void enteteTour(Citoyen joueur){
+        System.out.println("\n"+joueur.getPseudo());
+            System.out.println("Jour " + this.jour + ", " + this.heure + "h.");
+            System.out.println(joueur.getPa() + " PA | " +joueur.getPv() + " PV");
+            if(joueur.getDependant()){
+                System.out.println("Dépendant à la drogue. Vous pouvez encore résister "+joueur.getTempsSansDrogue()+" tours.");
+            }
+            if(joueur.getDejaMange()){
+                System.out.print("Déja mangé | ");
+                
+            }else{
+                System.out.print("Pas encore mangé | ");
+            }
+            if (joueur.getDejaBu()){
+                System.out.println("Déjà bu");
+            }else{
+                System.out.println("Pas encore bu");
+            }
+            System.out.println("");
+            System.out.println("\nQue voulez vous faire ?");
+    }
 ////////////////////////////////////////////////////////////////////////////
 // Méthodes publiques
 ////////////////////////////////////////////////////////////////////////////
@@ -479,10 +501,7 @@ public class Jeu {
         joueur.initTour();
         boolean finTour = false;
         while (!finTour) {
-            System.out.println("\n"+joueur.getPseudo());
-            System.out.println("Jour " + this.jour + ", " + this.heure + "h.");
-            System.out.println(joueur.getPa() + " PA | " +joueur.getPv() + " PV");
-            System.out.println("\nQue voulez vous faire ?");
+            enteteTour(joueur);
             if (joueur.estDansVille()) {
                 finTour = menuVille(joueur);
             } else {
